@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
-public class menuRegistro extends JPanel
+public class MenuRegistro extends JPanel
 {
     // campos de texto
     private JTextField campoNombre;
@@ -15,7 +15,7 @@ public class menuRegistro extends JPanel
     private JTextField campoClave;
 
     // constructor
-    public menuRegistro()
+    public MenuRegistro()
     {
         iniciarPanel();
     }

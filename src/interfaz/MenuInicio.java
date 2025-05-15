@@ -1,20 +1,33 @@
 package interfaz;
 
-import java.awt.Color;
+import java.awt.*;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
-public class menuInicio extends JPanel
+public class MenuInicio extends JPanel
 {
     // campos de texto
     private JTextField campoCorreo;
     private JTextField campoClave;
 
+    // objeto del contenedor
+    private final Container contenedor;
+
+    // objeto del menu de las materias
+    public static MenuMateria materia;
+
     // constructor
-    public menuInicio()
+    public MenuInicio()
     {
+        this.materia = new MenuMateria();
+
+        materia.setVisible(false);
+
+        this.contenedor = WindowComponent.getContenedor();
+        contenedor.add(materia);
+
         iniciarPanel();
     }
 
@@ -67,7 +80,7 @@ public class menuInicio extends JPanel
                                         12);
         WindowComponent.eventoBoton(botonEntrar,
                                     () -> {
-                                            WindowComponent.cambiarPanel(this, Main.principal);
+                                            WindowComponent.cambiarPanel(this, materia);
                                             System.out.println("usuario ingresado al sistema");
                                             limpiarTodo();
                                     },

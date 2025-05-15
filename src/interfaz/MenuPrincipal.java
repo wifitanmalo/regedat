@@ -1,24 +1,25 @@
 package interfaz;
 
+import java.awt.Image;
+
 import java.awt.Color;
 import java.awt.Container;
-import javax.swing.JPanel;
-import javax.swing.JButton;
+import javax.swing.*;
 
-public class menuPrincipal extends JPanel
+public class MenuPrincipal extends JPanel
 {
     // objetos de los menu
-    private final menuInicio inicio;
-    private final menuRegistro registro;
+    private final MenuInicio inicio;
+    private final MenuRegistro registro;
 
     // objeto del contenedor
     private final Container contenedor;
 
     // constructor
-    public menuPrincipal()
+    public MenuPrincipal()
     {
-        this.registro = new menuRegistro();
-        this.inicio = new menuInicio();
+        this.registro = new MenuRegistro();
+        this.inicio = new MenuInicio();
 
         inicio.setVisible(false);
         registro.setVisible(false);
@@ -37,10 +38,18 @@ public class menuPrincipal extends JPanel
         setBackground(WindowComponent.FONDO_VENTANA);
         setBounds(0, 0, Main.ANCHO_VENTANA, Main.ALTURA_VENTANA);
 
+        ImageIcon icon = new ImageIcon("logoUnivalle.jpg");
+        Image imagen = icon.getImage().getScaledInstance(113, 160, Image.SCALE_SMOOTH);
+        JLabel logo = new JLabel(new ImageIcon(imagen));
+        logo.setBounds( (Main.ANCHO_VENTANA-113)/2,
+                        (Main.ALTURA_VENTANA-160)/3,
+                        113,
+                        160);
+
         // agrega el boton para iniciar sesion
         JButton botonIniciar = WindowComponent.setBoton("Entrar",
-                                                    Main.ANCHO_VENTANA /3,
-                                                    161,
+                                                    Main.ANCHO_VENTANA/3,
+                                                    WindowComponent.yNegativo(logo, 20),
                                                     98,
                                                     50,
                                                     Color.decode("#8A9597"));
@@ -102,6 +111,7 @@ public class menuPrincipal extends JPanel
         add(botonIniciar);
         add(botonRegistro);
         add(botonInformacion);
+        add(logo);
 
         contenedor.add(this);
     }

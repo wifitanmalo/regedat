@@ -9,14 +9,14 @@ public class Main extends JFrame
     public static final int ANCHO_VENTANA=600, ALTURA_VENTANA=400;
 
     // objeto del menu principal
-    public static menuPrincipal principal;
+    public static MenuPrincipal principal;
 
     // constructor
     public Main()
     {
         iniciarVentana();
         WindowComponent.setContenedor(this.getContentPane());
-        principal = new menuPrincipal();
+        principal = new MenuPrincipal();
     }
 
     // metodo para inicializar la ventana principal
