@@ -89,7 +89,7 @@ public class MenuInicio extends JPanel
                                     WindowComponent.FONDO_PRESIONAR_BOTON);
 
         // titulo del correo
-        JLabel tituloCorreo = WindowComponent.setTexto("Nombre",
+        JLabel tituloCorreo = WindowComponent.setTexto("Correo",
                                                         (panelCampos.getWidth()-260)/2,
                                                         20,
                                                         260,

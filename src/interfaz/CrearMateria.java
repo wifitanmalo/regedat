@@ -65,8 +65,10 @@ public class CrearMateria extends JPanel
                                             14);
         WindowComponent.eventoBoton(botonCrear,
                                     () -> {
-                                        System.out.println("materia creada");
-                                        WindowComponent.cambiarPanel(this, MenuInicio.materia);
+                                        MenuPrincipal.reporte.validarMateria(this,
+                                                                                campoID,
+                                                                                campoNombre,
+                                                                                campoCreditos);
                                         limpiarTodo();
                                     },
                                     WindowComponent.FONDO_BOTON,

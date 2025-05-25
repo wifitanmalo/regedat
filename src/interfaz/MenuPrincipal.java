@@ -6,6 +6,8 @@ import java.awt.Color;
 import java.awt.Container;
 import javax.swing.*;
 
+import logica.Reporte;
+
 public class MenuPrincipal extends JPanel
 {
     // objetos de los menu
@@ -15,11 +17,15 @@ public class MenuPrincipal extends JPanel
     // objeto del contenedor
     private final Container contenedor;
 
+    // objeto del reporte
+    public static Reporte reporte;
+
     // constructor
     public MenuPrincipal()
     {
         this.registro = new MenuRegistro();
         this.inicio = new MenuInicio();
+        this.reporte = new Reporte();
 
         inicio.setVisible(false);
         registro.setVisible(false);

@@ -9,7 +9,7 @@ public class MenuMateria extends JPanel
     private final Container container;
 
     // panel de las materias
-    private static final JPanel listaMaterias = new JPanel();
+    public static final JPanel panelMaterias = new JPanel();
 
     // objeto del menu de crear materias
     private final CrearMateria crearMateria;
@@ -25,19 +25,19 @@ public class MenuMateria extends JPanel
         notas.setVisible(false);
 
         this.container = WindowComponent.getContenedor();
-        initialize_panel();
+        inicializarPanel();
     }
 
-    // method to initialize the main panel
-    public void initialize_panel()
+    // metodo para inicializar el menu de las materias
+    public void inicializarPanel()
     {
-        // create the main panel
+        // crea el panel
         setLayout(null);
         setBackground(WindowComponent.FONDO_VENTANA);
         setBounds(0, 0, Main.ANCHO_VENTANA, Main.ALTURA_VENTANA);
 
         // agrega una barra de desplazamiento vertical al listado de materias
-        JScrollPane barraScroll = WindowComponent.setScrollbar(listaMaterias,
+        JScrollPane barraScroll = WindowComponent.setScrollbar(panelMaterias,
                                                                 104,
                                                                 60,
                                                                 380,
