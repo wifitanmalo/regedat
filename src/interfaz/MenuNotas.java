@@ -6,16 +6,16 @@ import java.awt.*;
 public class MenuNotas extends JPanel
 {
     // panel de las notas
-    private static final JPanel listaNotas = new JPanel();
+    private static final JPanel panelNotas = new JPanel();
 
     // constructor
     public MenuNotas()
     {
-        initialize_panel();
+        inicializarPanel();
     }
 
     // method to initialize the main panel
-    public void initialize_panel()
+    public void inicializarPanel()
     {
         // create the main panel
         setLayout(null);
@@ -23,7 +23,7 @@ public class MenuNotas extends JPanel
         setBounds(0, 0, Main.ANCHO_VENTANA, Main.ALTURA_VENTANA);
 
         // agrega una barra de desplazamiento vertical al listado de materias
-        JScrollPane barraScroll = WindowComponent.setScrollbar(listaNotas,
+        JScrollPane barraScroll = WindowComponent.setScrollbar(panelNotas,
                                                                 104,
                                                                 60,
                                                                 380,
@@ -54,7 +54,7 @@ public class MenuNotas extends JPanel
         WindowComponent.eventoBoton(botonAgregar,
                                     () ->
                                     {
-                                        System.out.println("agregar nota");
+                                        cuadroNombre(this);
                                     },
                                     WindowComponent.FONDO_BOTON,
                                     WindowComponent.FONDO_SOBRE_BOTON,
@@ -66,7 +66,7 @@ public class MenuNotas extends JPanel
                                                         WindowComponent.yNegativo(botonAgregar, 20),
                                                         78,
                                                         50,
-                                                        Color.decode("#8A9597"));
+                                                        WindowComponent.FONDO_GRIS);
         WindowComponent.configurarTexto(botonVolver,
                                         WindowComponent.COLOR_FUENTE,
                                         1,
@@ -75,9 +75,8 @@ public class MenuNotas extends JPanel
                                     () ->
                                     {
                                         WindowComponent.cambiarPanel(this, MenuInicio.materia);
-                                        System.out.println("volver al menu de las materias");
                                     },
-                                    Color.decode("#8A9597"),
+                                    WindowComponent.FONDO_GRIS,
                                     Color.decode("#AAAAAA"),
                                     Color.decode("#C7C8CA"));
 
@@ -87,7 +86,7 @@ public class MenuNotas extends JPanel
                                                         botonAgregar.getY(),
                                                         78,
                                                         50,
-                                                        Color.decode("#8A9597"));
+                                                        WindowComponent.FONDO_GRIS);
         WindowComponent.configurarTexto(botonTotal,
                                         WindowComponent.COLOR_FUENTE,
                                         1,
@@ -97,7 +96,7 @@ public class MenuNotas extends JPanel
                                     {
                                         System.out.println("puntaje total de la materia");
                                     },
-                                    Color.decode("#8A9597"),
+                                    WindowComponent.FONDO_GRIS,
                                     Color.decode("#91BAD6"),
                                     Color.decode("#528AAE"));
 
@@ -108,4 +107,32 @@ public class MenuNotas extends JPanel
         add(tituloNotas);
         add(barraScroll);
     }
+
+    // metodo para mostrar un cuadro interactivo
+    public static void cuadroNombre(Component contenedor)
+    {
+        Window ventanaPadre = SwingUtilities.getWindowAncestor(contenedor);
+
+        // Crear el JDialog con la ventana padre si está disponible, o sin dueño si no hay
+        JDialog dialogo = new JDialog(ventanaPadre, "Ingresar nombre", Dialog.ModalityType.APPLICATION_MODAL);
+        dialogo.setSize(250, 100);
+        dialogo.setLayout(new FlowLayout());
+        dialogo.setLocationRelativeTo(contenedor);  // Se posiciona relativo al componente dado
+
+        JTextField campoTexto = new JTextField(15);
+        JButton botonCrear = new JButton("Vale");
+
+        botonCrear.addActionListener(e -> {
+            String textoIngresado = campoTexto.getText();
+            System.out.println("Texto ingresado: " + textoIngresado);
+            dialogo.dispose();
+        });
+
+        dialogo.add(new JLabel("Nombre: "));
+        dialogo.add(campoTexto);
+        dialogo.add(botonCrear);
+
+        dialogo.setVisible(true);
+    }
+
 }

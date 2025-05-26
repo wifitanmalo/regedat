@@ -39,9 +39,9 @@ public class Materia
     public void calcularPuntaje()
     {
         this.puntajeTotal = 0;
-        for (Nota listaNota : listaNotas)
+        for (Nota nota : listaNotas)
         {
-            this.puntajeTotal += listaNota.getPuntajeCalculado();
+            this.puntajeTotal += nota.getPuntaje() * (nota.getPorcentaje()/100);
         }
     }
 
@@ -72,5 +72,12 @@ public class Materia
     }
     public int getCreditos() {
         return creditos;
+    }
+
+    public void setListaNotas(ArrayList<Nota> listaNotas) {
+        this.listaNotas = listaNotas;
+    }
+    public ArrayList<Nota> getListaNotas() {
+        return listaNotas;
     }
 }

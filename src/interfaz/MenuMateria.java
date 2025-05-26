@@ -13,18 +13,19 @@ public class MenuMateria extends JPanel
 
     // objeto del menu de crear materias
     private final CrearMateria crearMateria;
-    private final MenuNotas notas;
+    public static MenuNotas menuNotas;
 
     // constructor
     public MenuMateria()
     {
         this.crearMateria = new CrearMateria();
-        this.notas = new MenuNotas();
+        this.menuNotas = new MenuNotas();
 
         crearMateria.setVisible(false);
-        notas.setVisible(false);
+        menuNotas.setVisible(false);
 
         this.container = WindowComponent.getContenedor();
+        container.add(menuNotas);
         inicializarPanel();
     }
 
@@ -68,7 +69,6 @@ public class MenuMateria extends JPanel
         WindowComponent.eventoBoton(botonAgregar,
                                     () ->
                                     {
-                                        System.out.println("agregar materia");
                                         WindowComponent.cambiarPanel(this, crearMateria);
                                     },
                                     WindowComponent.FONDO_BOTON,
@@ -81,7 +81,7 @@ public class MenuMateria extends JPanel
                                                         WindowComponent.yNegativo(botonAgregar, 20),
                                                         78,
                                                         50,
-                                                        Color.decode("#8A9597"));
+                                                        WindowComponent.FONDO_GRIS);
         WindowComponent.configurarTexto(botonCerrar,
                                         WindowComponent.COLOR_FUENTE,
                                         1,
@@ -92,7 +92,7 @@ public class MenuMateria extends JPanel
                                         WindowComponent.cambiarPanel(this, Main.principal);
                                         System.out.println("cerrar sesion");
                                     },
-                                    Color.decode("#8A9597"),
+                                    WindowComponent.FONDO_GRIS,
                                     Color.decode("#AAAAAA"),
                                     Color.decode("#C7C8CA"));
 
@@ -102,7 +102,7 @@ public class MenuMateria extends JPanel
                                                         botonAgregar.getY(),
                                                         78,
                                                         50,
-                                                        Color.decode("#8A9597"));
+                                                        WindowComponent.FONDO_GRIS);
         WindowComponent.configurarTexto(botonReporte,
                                         WindowComponent.COLOR_FUENTE,
                                         1,
@@ -112,7 +112,7 @@ public class MenuMateria extends JPanel
                                     {
                                         System.out.println("mostrar reporte de materias");
                                     },
-                                    Color.decode("#8A9597"),
+                                    WindowComponent.FONDO_GRIS,
                                     Color.decode("#91BAD6"),
                                     Color.decode("#528AAE"));
 

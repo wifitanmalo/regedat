@@ -51,7 +51,7 @@ public class MenuInicio extends JPanel
                                                         161,
                                                         78,
                                                         50,
-                                                        Color.decode("#8A9597"));
+                                                        WindowComponent.FONDO_GRIS);
         WindowComponent.configurarTexto(botonVolver,
                                         WindowComponent.COLOR_FUENTE,
                                         1,
@@ -63,7 +63,7 @@ public class MenuInicio extends JPanel
                                         System.out.println("volver a inicio");
                                         limpiarTodo();
                                     },
-                                    Color.decode("#8A9597"),
+                                    WindowComponent.FONDO_GRIS,
                                     Color.decode("#AAAAAA"),
                                     Color.decode("#C7C8CA"));
 

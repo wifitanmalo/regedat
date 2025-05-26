@@ -1,19 +1,33 @@
 package logica;
 
-public class Nota {
+public class Nota
+{
     // atributos
+    private String nombre;
     private double puntaje;
     private double porcentaje;
-    private double puntajeCalculado;
+    private Materia materia;
 
     // constructor
-    public Nota(double puntaje, double porcentaje) {
+    public Nota(String nombre,
+                double puntaje,
+                double porcentaje,
+                Materia materia)
+    {
+        this.nombre = nombre;
         this.puntaje = puntaje;
         this.porcentaje = porcentaje;
-        this.puntajeCalculado = puntaje * (porcentaje/100);
+        this.materia = materia;
     }
 
     // setters y getters
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    public String getNombre() {
+        return nombre;
+    }
+
     public void setPuntaje(double puntaje) {
         this.puntaje = puntaje;
     }
@@ -28,10 +42,10 @@ public class Nota {
         return this.porcentaje;
     }
 
-    public void setPuntajeCalculado(double puntaje) {
-        this.puntajeCalculado = puntaje;
+    public void setMateria(Materia materia) {
+        this.materia = materia;
     }
-    public double getPuntajeCalculado() {
-        return this.puntajeCalculado;
+    public Materia getMateria() {
+        return this.materia;
     }
 }

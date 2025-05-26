@@ -11,10 +11,10 @@ public class PanelMateria extends JPanel
     // objeto de la materia
     private final Materia materia;
 
-    // subject panels
+    // panel de las materias
     private final JPanel panelMaterias;
 
-    // performance labels
+    // paneles de rendimiento
     private JLabel puntajeTotal;
     private JLabel totalEvaluado;
 
@@ -30,12 +30,12 @@ public class PanelMateria extends JPanel
     public void inicializarPanel()
     {
         setPreferredSize(new Dimension(380, 80));
-        setBackground(Color.decode("#8A9597"));
+        setBackground(WindowComponent.FONDO_GRIS);
         setLayout(null);
 
         // nombre de la materia
         JLabel nombreMateria = WindowComponent.setTexto(materia.getId() + " " + materia.getNombre(), 10, 10, 220, 18);
-        WindowComponent.configurarTexto(nombreMateria, WindowComponent.COLOR_FUENTE, 1, 8);
+        WindowComponent.configurarTexto(nombreMateria, WindowComponent.COLOR_FUENTE, 1, 10);
 
         // text of the total score
         puntajeTotal = WindowComponent.setTexto(("Puntaje total: 0.0"),
@@ -105,7 +105,7 @@ public class PanelMateria extends JPanel
         WindowComponent.eventoBoton(botonNota,
                                     () ->
                                     {
-                                        System.out.println("menu de calificaciones");
+                                        WindowComponent.cambiarPanel(MenuInicio.materia, MenuMateria.menuNotas);
                                     },
                                     botonNota.getBackground(),
                                     Color.decode("#C5EF48"),

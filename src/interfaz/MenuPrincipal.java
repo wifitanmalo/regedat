@@ -58,7 +58,7 @@ public class MenuPrincipal extends JPanel
                                                     WindowComponent.yNegativo(logo, 20),
                                                     98,
                                                     50,
-                                                    Color.decode("#8A9597"));
+                                                    WindowComponent.FONDO_GRIS);
         WindowComponent.configurarTexto(botonIniciar,
                                         WindowComponent.COLOR_FUENTE,
                                         1,
@@ -69,7 +69,7 @@ public class MenuPrincipal extends JPanel
                                         WindowComponent.cambiarPanel(this, inicio);
                                         System.out.println("iniciar sesion");
                                     },
-                                    Color.decode("#8A9597"),
+                                    WindowComponent.FONDO_GRIS,
                                     Color.decode("#AAAAAA"),
                                     Color.decode("#C7C8CA"));
 
@@ -100,7 +100,7 @@ public class MenuPrincipal extends JPanel
                                                         20,
                                                         50,
                                                         50,
-                                                        Color.decode("#8A9597"));
+                                                        WindowComponent.FONDO_GRIS);
         WindowComponent.configurarTexto(botonInformacion,
                                         WindowComponent.COLOR_FUENTE,
                                         1,
@@ -110,7 +110,7 @@ public class MenuPrincipal extends JPanel
                                     {
                                         System.out.println("mostrar informacion");
                                     },
-                                    Color.decode("#8A9597"),
+                                    WindowComponent.FONDO_GRIS,
                                     Color.decode("#91BAD6"),
                                     Color.decode("#528AAE"));
 

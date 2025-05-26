@@ -36,7 +36,7 @@ public class CrearMateria extends JPanel
                                                         161,
                                                         88,
                                                         50,
-                                                        Color.decode("#8A9597"));
+                                                        WindowComponent.FONDO_GRIS);
         WindowComponent.configurarTexto(botonVolver,
                                         WindowComponent.COLOR_FUENTE,
                                         1,
@@ -48,7 +48,7 @@ public class CrearMateria extends JPanel
                                         WindowComponent.cambiarPanel(this, MenuInicio.materia);
                                         limpiarTodo();
                                     },
-                                    Color.decode("#8A9597"),
+                                    WindowComponent.FONDO_GRIS,
                                     Color.decode("#AAAAAA"),
                                     Color.decode("#C7C8CA"));
 

@@ -10,12 +10,13 @@ public class WindowComponent
     // fuente de letra predeterminada del sistema
     public static final String FUENTE_PRINCIPAL = "Verdana";
 
-    // color predeterminados
+    // colores predeterminados
     public static final Color COLOR_FUENTE = Color.decode("#FFFFFF");
     public static final Color FONDO_BOTON = Color.decode("#FF5252");
     public static final Color FONDO_SOBRE_BOTON = Color.decode("#FF8A80");
     public static final Color FONDO_PRESIONAR_BOTON = Color.decode("#F44336");
     public static final Color FONDO_VENTANA = Color.decode("#F4F3F2");
+    public static final Color FONDO_GRIS = Color.decode("#757575");
 
     // objeto del contenedor
     public static Container current_container;
@@ -50,7 +51,7 @@ public class WindowComponent
                                              int largo)
     {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(FONDO_BOTON);
+        panel.setBackground(FONDO_GRIS);
 
         JScrollPane scrollPanel = new JScrollPane(panel);
         scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

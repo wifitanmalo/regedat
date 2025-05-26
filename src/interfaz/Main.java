@@ -17,6 +17,7 @@ public class Main extends JFrame
         iniciarVentana();
         WindowComponent.setContenedor(this.getContentPane());
         principal = new MenuPrincipal();
+        // WindowComponent.mostrarDialogo(this);
     }
 
     // metodo para inicializar la ventana principal

@@ -40,10 +40,10 @@ public class Reporte
                                                 "Error",
                                                 JOptionPane.ERROR_MESSAGE);
             }
-            else if ( (id < 0) || (creditos < 0) )
+            else if ( (id < 0) || (creditos <= 0) )
             {
                 WindowComponent.cuadroMensaje(contenedor,
-                        "ID/Créditos no pueden ser vacíos.",
+                        "ID/Créditos deben ser mayores que 0.",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
             }
