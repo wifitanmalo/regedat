@@ -11,6 +11,7 @@ public class Materia
 
     // atributo de rendimiento
     private double puntajeTotal;
+    private double porcentajeEvaluado;
 
     // constantes de los puntajes
     public static final double MINIMO_PUNTAJE = 3.0;
@@ -39,10 +40,36 @@ public class Materia
     public void calcularPuntaje()
     {
         this.puntajeTotal = 0;
+        this.porcentajeEvaluado = 0;
         for (Nota nota : listaNotas)
         {
             this.puntajeTotal += nota.getPuntaje() * (nota.getPorcentaje()/100);
+            this.porcentajeEvaluado += nota.getPorcentaje();
         }
+    }
+
+    // method to create a grade
+    public void createGrade(Nota grade)
+    {
+        listaNotas.add(grade);
+    }
+
+    // method to delete a grade
+    public void deleteGrade(Nota grade)
+    {
+        listaNotas.remove(grade);
+    }
+
+    // method to update a grade by its index
+    public void updateGrade(Nota grade)
+    {
+        listaNotas.set(getGradeIndex(grade), grade);
+    }
+
+    // method to get the index of the fos.view.GradePanel
+    public int getGradeIndex(Nota grade)
+    {
+        return listaNotas.indexOf(grade);
     }
 
     // setters y getters
@@ -65,6 +92,13 @@ public class Materia
     }
     public double getPuntajeTotal() {
         return puntajeTotal;
+    }
+
+    public void setPorcentajeEvaluado(double porcentajeEvaluado) {
+        this.porcentajeEvaluado = porcentajeEvaluado;
+    }
+    public double getPorcentajeEvaluado() {
+        return this.porcentajeEvaluado;
     }
 
     public void setCreditos(int creditos) {

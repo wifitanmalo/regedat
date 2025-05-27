@@ -80,8 +80,8 @@ public class MenuInicio extends JPanel
                                         12);
         WindowComponent.eventoBoton(botonEntrar,
                                     () -> {
+                                            materia.refrescarMaterias();
                                             WindowComponent.cambiarPanel(this, materia);
-                                            System.out.println("usuario ingresado al sistema");
                                             limpiarTodo();
                                     },
                                     WindowComponent.FONDO_BOTON,

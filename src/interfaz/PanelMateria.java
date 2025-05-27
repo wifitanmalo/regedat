@@ -11,8 +11,9 @@ public class PanelMateria extends JPanel
     // objeto de la materia
     private final Materia materia;
 
-    // panel de las materias
+    // panel de las materias y de las notas
     private final JPanel panelMaterias;
+    public static MenuNotas menuNotas;
 
     // paneles de rendimiento
     private JLabel puntajeTotal;
@@ -105,7 +106,12 @@ public class PanelMateria extends JPanel
         WindowComponent.eventoBoton(botonNota,
                                     () ->
                                     {
-                                        WindowComponent.cambiarPanel(MenuInicio.materia, MenuMateria.menuNotas);
+                                        menuNotas = new MenuNotas(materia);
+                                        menuNotas.setVisible(false);
+                                        WindowComponent.getContenedor().add(menuNotas);
+                                        menuNotas.refrescarNotas(this.materia);
+                                        menuNotas.setTextoPuntaje(this.materia.getPuntajeTotal());
+                                        WindowComponent.cambiarPanel(MenuInicio.materia, menuNotas);
                                     },
                                     botonNota.getBackground(),
                                     Color.decode("#C5EF48"),
@@ -129,7 +135,7 @@ public class PanelMateria extends JPanel
     public void set_score_label(double score)
     {
         score = (int)(score * 100) / 100.0;
-        puntajeTotal.setText("Total score: " + score);
+        puntajeTotal.setText("Puntaje total: " + score);
     }
     public JLabel get_score_label()
     {
@@ -138,7 +144,7 @@ public class PanelMateria extends JPanel
 
     public void set_evaluated_label(double percentage)
     {
-        totalEvaluado.setText("Evaluated percentage: " + (int)(percentage * 100) / 100.0 + "%");
+        totalEvaluado.setText("Porcentaje evaluado: " + (int)(percentage * 100) / 100.0 + "%");
     }
     public JLabel get_evaluated_label()
     {

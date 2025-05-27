@@ -1,5 +1,8 @@
 package interfaz;
 
+import logica.Materia;
+import logica.Reporte;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -13,19 +16,15 @@ public class MenuMateria extends JPanel
 
     // objeto del menu de crear materias
     private final CrearMateria crearMateria;
-    public static MenuNotas menuNotas;
 
     // constructor
     public MenuMateria()
     {
         this.crearMateria = new CrearMateria();
-        this.menuNotas = new MenuNotas();
 
         crearMateria.setVisible(false);
-        menuNotas.setVisible(false);
 
         this.container = WindowComponent.getContenedor();
-        container.add(menuNotas);
         inicializarPanel();
     }
 
@@ -126,5 +125,18 @@ public class MenuMateria extends JPanel
         // agrega los componentes al contenedor
         container.add(this);
         container.add(crearMateria);
+    }
+
+    // method to load the grades
+    public void refrescarMaterias()
+    {
+        panelMaterias.removeAll();
+        for(Materia materia : Reporte.materiaDAO.getListaMaterias())
+        {
+            PanelMateria panelActual = new PanelMateria(materia);
+            panelActual.set_score_label(materia.getPuntajeTotal());
+            panelActual.set_evaluated_label(materia.getPorcentajeEvaluado());
+            WindowComponent.recargar(panelMaterias);
+        }
     }
 }

@@ -44,7 +44,7 @@ public class CrearMateria extends JPanel
         WindowComponent.eventoBoton(botonVolver,
                                     () ->
                                     {
-                                        System.out.println("volver al menu materias");
+                                        MenuInicio.materia.refrescarMaterias();
                                         WindowComponent.cambiarPanel(this, MenuInicio.materia);
                                         limpiarTodo();
                                     },
@@ -64,11 +64,13 @@ public class CrearMateria extends JPanel
                                             1,
                                             14);
         WindowComponent.eventoBoton(botonCrear,
-                                    () -> {
+                                    () ->
+                                    {
                                         MenuPrincipal.reporte.validarMateria(this,
                                                                                 campoID,
                                                                                 campoNombre,
                                                                                 campoCreditos);
+                                        MenuInicio.materia.refrescarMaterias();
                                         limpiarTodo();
                                     },
                                     WindowComponent.FONDO_BOTON,

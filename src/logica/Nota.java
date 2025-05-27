@@ -6,18 +6,18 @@ public class Nota
     private String nombre;
     private double puntaje;
     private double porcentaje;
-    private Materia materia;
+    private int idMateria;
 
     // constructor
     public Nota(String nombre,
                 double puntaje,
                 double porcentaje,
-                Materia materia)
+                int materia)
     {
         this.nombre = nombre;
         this.puntaje = puntaje;
         this.porcentaje = porcentaje;
-        this.materia = materia;
+        this.idMateria = materia;
     }
 
     // setters y getters
@@ -42,10 +42,10 @@ public class Nota
         return this.porcentaje;
     }
 
-    public void setMateria(Materia materia) {
-        this.materia = materia;
+    public void setIdMateria(int idMateria) {
+        this.idMateria = idMateria;
     }
-    public Materia getMateria() {
-        return this.materia;
+    public int getIdMateria() {
+        return this.idMateria;
     }
 }
