@@ -68,7 +68,6 @@ public class PanelNota extends JPanel
                 {
                     nota.setPuntaje(0);
                 }
-                materia.updateGrade(nota);
                 super.keyReleased(e);
             }
         });
@@ -107,7 +106,6 @@ public class PanelNota extends JPanel
                 catch (NumberFormatException ex) {
                     nota.setPorcentaje(0);
                 }
-                materia.updateGrade(nota);
                 super.keyReleased(e);
             }
         });
@@ -137,16 +135,7 @@ public class PanelNota extends JPanel
         WindowComponent.eventoBoton(botonEliminar,
                 () ->
                 {
-                    if (materia.getListaNotas().contains(nota))
-                    {
-                        // delete the grade from the grades panel/list
-                        gradeBox.remove(this);
-                        materia.deleteGrade(nota);
-
-                        // reload the panel to show the changes
-                        WindowComponent.recargar(gradeBox);
-                    }
-                    materia.getListaNotas().remove(nota);
+                    System.out.println("eliminar nota");
                 },
                 botonEliminar.getBackground(),
                 Color.decode("#FF4F4B"),

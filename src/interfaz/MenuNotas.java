@@ -67,7 +67,6 @@ public class MenuNotas extends JPanel
                                     () ->
                                     {
                                         cuadroNombre(this, this.materia);
-                                        PanelMateria.menuNotas.refrescarNotas(this.materia);
                                         WindowComponent.recargar(panelNotas);
                                     },
                                     WindowComponent.FONDO_BOTON,
@@ -122,7 +121,6 @@ public class MenuNotas extends JPanel
         WindowComponent.eventoBoton(botonTotal,
                                     () ->
                                     {
-                                        materia.calcularPuntaje();
                                         setTextoPuntaje(materia.getPuntajeTotal());
                                     },
                                     WindowComponent.FONDO_GRIS,
@@ -153,7 +151,6 @@ public class MenuNotas extends JPanel
         botonCrear.addActionListener(e -> {
             String nombreNota = campoTexto.getText();
             Nota nuevaNota = new Nota(nombreNota, 0.0, 0.0, materiaActual.getId());
-            materiaActual.createGrade(nuevaNota);
             dialogo.dispose();
         });
 
@@ -177,21 +174,5 @@ public class MenuNotas extends JPanel
             textoPuntaje.setForeground(Color.decode("#FF6865"));
         }
         WindowComponent.recargar(textoPuntaje);
-    }
-
-    // method to load the grades
-    public void refrescarNotas(Materia materiaActual)
-    {
-        panelNotas.removeAll();
-        for(Nota nota : materiaActual.getListaNotas())
-        {
-            // set the grade values in the text fields
-            PanelNota currentPanel = new PanelNota(materiaActual, nota);
-            currentPanel.setTextoPuntaje(String.valueOf(nota.getPuntaje()));
-            currentPanel.setTextoPorcentaje(String.valueOf(nota.getPorcentaje()));
-
-            // reload the panel to show the changes
-            WindowComponent.recargar(panelNotas);
-        }
     }
 }

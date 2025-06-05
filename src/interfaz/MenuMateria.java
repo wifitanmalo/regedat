@@ -1,6 +1,9 @@
 package interfaz;
 
 // improtaciones de awt
+import datos.DatosMateria;
+import logica.Inscripcion;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -65,7 +68,7 @@ public class MenuMateria extends JPanel
         WindowComponent.eventoBoton(botonAgregar,
                                     () ->
                                     {
-                                        cuadroCodigo(this);
+                                        cuadroCodigo(panelMaterias);
                                     },
                                     WindowComponent.FONDO_BOTON,
                                     WindowComponent.FONDO_SOBRE_BOTON,
@@ -135,8 +138,34 @@ public class MenuMateria extends JPanel
         JButton inscribir = new JButton("Vale");
 
         inscribir.addActionListener(e -> {
-            String codigoMateria = campoTexto.getText();
-            dialogo.dispose();
+            try
+            {
+                int codigoMateria = Integer.parseInt(campoTexto.getText().trim());
+                if (DatosMateria.materiaExiste(codigoMateria, this))
+                {
+                    // inserta la inscripción en la base de datos
+                    Inscripcion.materiaDAO.inscribirMateria(codigoMateria,this);
+                    // recarga las materias para mostrar los cambios
+                    Inscripcion.materiaDAO.cargarMaterias(this, MenuInicio.estudiante.getCodigo());
+                    dialogo.dispose();
+                }
+                else
+                {
+                    WindowComponent.cuadroMensaje(dialogo,
+                                                "La materia no existe.",
+                                                "Error de entrada",
+                                                JOptionPane.ERROR_MESSAGE);
+                    campoTexto.setText("");
+                }
+            }
+            catch (NumberFormatException nfe)
+            {
+                WindowComponent.cuadroMensaje(dialogo,
+                                            "Solo puedes ingresar números enteros.",
+                                            "Error de entrada",
+                                            JOptionPane.ERROR_MESSAGE);
+                campoTexto.setText("");
+            }
         });
 
         dialogo.add(new JLabel("Código: "));

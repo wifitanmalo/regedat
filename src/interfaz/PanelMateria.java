@@ -75,17 +75,15 @@ public class PanelMateria extends JPanel
                                     () ->
                                     {
                                         int choice = JOptionPane.showConfirmDialog(panelMaterias,
-                                                "You want to delete this subject?",
-                                                "Delete subject",
-                                                JOptionPane.YES_NO_OPTION);
-                                        if(choice == JOptionPane.YES_OPTION && Inscripcion.materiaDAO.getListaMaterias().contains(materia))
+                                                                                "¿Quieres eliminar esta materia?",
+                                                                                "Eliminar materia",
+                                                                                JOptionPane.YES_NO_OPTION);
+                                        if(choice == JOptionPane.YES_OPTION)
                                         {
-                                            // elimina la materia del archivo/panel
-                                            panelMaterias.remove(this);
-                                            Inscripcion.materiaDAO.eliminarMateria(materia);
-
+                                            // elimina la inscripcion de la materia en la base de datos
+                                            Inscripcion.materiaDAO.eliminarMateria(this.materia.getId(), panelMaterias);
                                             // recarga el panel para mostrar los cambios
-                                            WindowComponent.recargar(panelMaterias);
+                                            Inscripcion.materiaDAO.cargarMaterias(panelMaterias, MenuInicio.estudiante.getCodigo());
                                         }
                                     },
                                     botonEliminar.getBackground(),
@@ -109,7 +107,6 @@ public class PanelMateria extends JPanel
                                         menuNotas = new MenuNotas(materia);
                                         menuNotas.setVisible(false);
                                         WindowComponent.getContenedor().add(menuNotas);
-                                        menuNotas.refrescarNotas(this.materia);
                                         menuNotas.setTextoPuntaje(this.materia.getPuntajeTotal());
                                         WindowComponent.cambiarPanel(MenuInicio.materia, menuNotas);
                                     },
