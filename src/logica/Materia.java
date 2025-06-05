@@ -15,9 +15,6 @@ public class Materia
     // constantes de los puntajes
     public static final double MINIMO_PUNTAJE = 3.0, MAXIMO_PUNTAJE = 5.0;
 
-    // lista de notas
-    private ArrayList<Nota> listaNotas;
-
     // constructor
     public Materia(int id, String nombre, int creditos)
     {
@@ -25,7 +22,6 @@ public class Materia
         this.nombre = nombre;
         this.puntajeTotal = 0;
         this.creditos = creditos;
-        this.listaNotas = new ArrayList<>();
     }
 
     // setters y getters

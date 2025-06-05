@@ -1,27 +1,31 @@
 package logica;
 
-import datos.DatosEstudiante;
-import interfaz.WindowComponent;
-import datos.DatosMateria;
-
-import javax.swing.*;
 import java.awt.*;
 import java.security.MessageDigest;
+import javax.swing.*;
 
+// importaciones de SQL
 import java.sql.*;
 
-public class Inscripcion
+// importaciones de los paquetes
+import interfaz.WindowComponent;
+import datos.DatosEstudiante;
+import datos.DatosMateria;
+import datos.DatosNota;
+
+public class Reporte
 {
-    // objeto para manejar los datos de las materias
-    public static DatosMateria materiaDAO;
-    // objeto para manejar los datos de los estudiantes
+    // objetos para manejar los datos de la base de datos
     public static DatosEstudiante estudianteDAO;
+    public static DatosMateria materiaDAO;
+    public static DatosNota notaDAO;
 
     // constructor
-    public Inscripcion()
+    public Reporte()
     {
-        this.materiaDAO = new DatosMateria();
         this.estudianteDAO = new DatosEstudiante();
+        this.materiaDAO = new DatosMateria();
+        this.notaDAO = new DatosNota();
     }
 
     // metodo para encriptar una clave ingresada
@@ -67,6 +71,7 @@ public class Inscripcion
         }
         catch (NumberFormatException e)
         {
+            e.printStackTrace();
             WindowComponent.cuadroMensaje(contenedor,
                                         "ID debe ser un entero.",
                                         "Error",

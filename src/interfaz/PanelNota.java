@@ -22,19 +22,16 @@ public class PanelNota extends JPanel
     private final JPanel gradeBox;
 
     // subject and grade objects
-    private final Materia materia;
     private final Nota nota;
 
     // text boxes
-    private JTextField campoPuntaje;
-    private JTextField campoPorcentaje;
+    private JTextField campoPuntaje, campoPorcentaje;
 
     // constructor
-    public PanelNota(Materia materia, Nota nota)
+    public PanelNota(int idInscripcion, Nota nota, JPanel panelNotas)
     {
-        this.materia = materia;
         this.nota = nota;
-        this.gradeBox = MenuNotas.panelNotas;
+        this.gradeBox = panelNotas;
         panelNota();
     }
 

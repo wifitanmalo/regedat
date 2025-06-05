@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import logica.Inscripcion;
+import logica.Reporte;
 import logica.Estudiante;
 
 public class DatosEstudiante
@@ -15,7 +15,7 @@ public class DatosEstudiante
     {
         String query = "SELECT * FROM Estudiante WHERE codigo = ?";
 
-        try (Connection connection = Inscripcion.conectarDB();
+        try (Connection connection = Reporte.conectarDB();
              PreparedStatement statement = connection.prepareStatement(query))
         {
             statement.setInt(1, codigoBuscado);
@@ -39,9 +39,8 @@ public class DatosEstudiante
         }
         catch (SQLException e)
         {
-            System.err.println("Error al obtener estudiante: " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
-
 }

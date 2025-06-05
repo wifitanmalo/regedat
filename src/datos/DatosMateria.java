@@ -1,8 +1,9 @@
 package datos;
 
+// importaciones de awt
 import java.awt.Container;
 
-// importaciones de Swing
+// importaciones de swing
 import javax.swing.JOptionPane;
 
 // importaciones de SQL
@@ -14,7 +15,7 @@ import java.sql.SQLException;
 import interfaz.MenuInicio;
 import interfaz.MenuMateria;
 import logica.Materia;
-import logica.Inscripcion;
+import logica.Reporte;
 import interfaz.PanelMateria;
 import interfaz.WindowComponent;
 
@@ -29,20 +30,40 @@ public class DatosMateria
 
     }
 
+    // metodo para obtener el id de una inscripcion
+    public Integer obtenerIdInscripcion(int idMateria)
+    {
+        String consulta = "SELECT id FROM Inscripcion WHERE idEstudiante = ? AND idMateria = ?";
+        try (Connection conectar = Reporte.conectarDB();
+             PreparedStatement inscripcion = conectar.prepareStatement(consulta))
+        {
+            inscripcion.setInt(1, MenuInicio.estudiante.getCodigo());
+            inscripcion.setInt(2, idMateria);
+            ResultSet resultado = inscripcion.executeQuery();
+            if (resultado.next()) return resultado.getInt("id");
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     // metodo para verificar si una materia existe
-    public static boolean materiaExiste(int idMateria, Container container)
+    public static boolean materiaExiste(int idInscripcion, Container container)
     {
         // consulta de la materia
         String query = "SELECT 1 FROM Materia WHERE id = ?";
-        try (Connection conectar = Inscripcion.conectarDB();
+        try (Connection conectar = Reporte.conectarDB();
              PreparedStatement materia = conectar.prepareStatement(query))
         {
-            materia.setInt(1, idMateria);
+            materia.setInt(1, idInscripcion);
             ResultSet resultado = materia.executeQuery();
             return resultado.next();
         }
         catch (SQLException e)
         {
+            e.printStackTrace();
             WindowComponent.cuadroMensaje(container,
                                         "Error comprobando las materias.",
                                         "Database error",
@@ -62,7 +83,7 @@ public class DatosMateria
         WHERE i.idEstudiante = ?;
         """;
 
-        try (Connection isConnected = Inscripcion.conectarDB();
+        try (Connection isConnected = Reporte.conectarDB();
              PreparedStatement statement = isConnected.prepareStatement(query))
         {
             statement.setInt(1, idEstudiante);
@@ -95,26 +116,27 @@ public class DatosMateria
         }
         catch (SQLException e)
         {
+            e.printStackTrace();
             WindowComponent.cuadroMensaje(contenedor,
-                                        "Error cargando las materias.",
+                                        "Error al cargar las materias.",
                                         "Database error",
                                         JOptionPane.ERROR_MESSAGE);
         }
     }
 
     // metodo para crear una inscripcion en la base de datos
-    public boolean inscribirMateria(int idMateria, Container contenedor)
+    public boolean inscribirMateria(int idInscripcion, Container contenedor)
     {
         // consultas
-        String buscar = "SELECT 1 FROM Inscripcion WHERE idEstudiante = ? AND idMateria = ?";
-        String insertar = "INSERT INTO Inscripcion (idEstudiante, idMateria) VALUES (?, ?)";
+        String buscar = "SELECT 1 FROM Inscripcion WHERE idEstudiante = ? AND idInscripcion = ?";
+        String insertar = "INSERT INTO Inscripcion (idEstudiante, idInscripcion) VALUES (?, ?)";
 
-        try (Connection conectar = Inscripcion.conectarDB();
+        try (Connection conectar = Reporte.conectarDB();
              PreparedStatement inscripcion = conectar.prepareStatement(buscar))
         {
             // llaves foraneas de la inscripcion
             inscripcion.setInt(1, MenuInicio.estudiante.getCodigo());
-            inscripcion.setInt(2, idMateria);
+            inscripcion.setInt(2, idInscripcion);
             // ejecuta la consulta
             ResultSet resultado = inscripcion.executeQuery();
 
@@ -133,7 +155,7 @@ public class DatosMateria
             {
                 // llaveas foraneas de la inscripcion
                 insertStmt.setInt(1, MenuInicio.estudiante.getCodigo());
-                insertStmt.setInt(2, idMateria);
+                insertStmt.setInt(2, idInscripcion);
                 // ejecuta la consulta
                 insertStmt.executeUpdate();
                 return true;
@@ -141,6 +163,7 @@ public class DatosMateria
         }
         catch (SQLException e)
         {
+            e.printStackTrace();
             WindowComponent.cuadroMensaje(contenedor,
                                         "Error durante la inscripción.",
                                         "Database error",
@@ -150,21 +173,22 @@ public class DatosMateria
     }
 
     // metodo para eliminar la inscripcion a una materia
-    public void eliminarMateria(int idMateria, Container contenedor)
+    public void eliminarMateria(int idInscripcion, Container contenedor)
     {
         // consulta de eliminación
-        String query = "DELETE FROM Inscripcion WHERE idEstudiante = ? AND idMateria = ?";
-        try (Connection conectar = Inscripcion.conectarDB();
+        String query = "DELETE FROM Inscripcion WHERE idEstudiante = ? AND idInscripcion = ?";
+        try (Connection conectar = Reporte.conectarDB();
              PreparedStatement eliminar = conectar.prepareStatement(query))
         {
             // llaveas foraneas de la inscripcion
             eliminar.setInt(1, MenuInicio.estudiante.getCodigo());
-            eliminar.setInt(2, idMateria);
+            eliminar.setInt(2, idInscripcion);
             // ejecuta la consulta
             eliminar.executeUpdate();
         }
         catch (SQLException e)
         {
+            e.printStackTrace();
             WindowComponent.cuadroMensaje(contenedor,
                                         "Error durante la eliminación.",
                                         "Database error",

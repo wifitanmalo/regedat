@@ -4,7 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import logica.Materia;
-import logica.Inscripcion;
+import logica.Reporte;
 
 public class PanelMateria extends JPanel
 {
@@ -13,7 +13,7 @@ public class PanelMateria extends JPanel
 
     // panel de las materias y de las notas
     private final JPanel panelMaterias;
-    public static MenuNotas menuNotas;
+    private MenuNotas menuNotas;
 
     // paneles de rendimiento
     private JLabel puntajeTotal;
@@ -33,6 +33,10 @@ public class PanelMateria extends JPanel
         setPreferredSize(new Dimension(380, 80));
         setBackground(WindowComponent.FONDO_GRIS);
         setLayout(null);
+
+        menuNotas = new MenuNotas(materia);
+        menuNotas.setVisible(false);
+        WindowComponent.getContenedor().add(menuNotas);
 
         // nombre de la materia
         JLabel nombreMateria = WindowComponent.setTexto(materia.getId() + " " + materia.getNombre(), 10, 10, 220, 18);
@@ -81,9 +85,9 @@ public class PanelMateria extends JPanel
                                         if(choice == JOptionPane.YES_OPTION)
                                         {
                                             // elimina la inscripcion de la materia en la base de datos
-                                            Inscripcion.materiaDAO.eliminarMateria(this.materia.getId(), panelMaterias);
+                                            Reporte.materiaDAO.eliminarMateria(this.materia.getId(), panelMaterias);
                                             // recarga el panel para mostrar los cambios
-                                            Inscripcion.materiaDAO.cargarMaterias(panelMaterias, MenuInicio.estudiante.getCodigo());
+                                            Reporte.materiaDAO.cargarMaterias(panelMaterias, MenuInicio.estudiante.getCodigo());
                                         }
                                     },
                                     botonEliminar.getBackground(),
@@ -104,9 +108,8 @@ public class PanelMateria extends JPanel
         WindowComponent.eventoBoton(botonNota,
                                     () ->
                                     {
-                                        menuNotas = new MenuNotas(materia);
-                                        menuNotas.setVisible(false);
-                                        WindowComponent.getContenedor().add(menuNotas);
+                                        // carga las notas de la materia
+                                        Reporte.notaDAO.cargarNotas(materia, menuNotas.getPanelNotas(), this);
                                         menuNotas.setTextoPuntaje(this.materia.getPuntajeTotal());
                                         WindowComponent.cambiarPanel(MenuInicio.materia, menuNotas);
                                     },

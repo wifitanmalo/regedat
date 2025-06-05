@@ -3,24 +3,40 @@ package logica;
 public class Nota
 {
     // atributos
+    private int id;
+    private int idInscripcion;
     private String nombre;
     private double puntaje;
     private double porcentaje;
-    private int idMateria;
 
     // constructor
-    public Nota(String nombre,
+    public Nota(int id,
+                int idInscripcion,
+                String nombre,
                 double puntaje,
-                double porcentaje,
-                int materia)
+                double porcentaje)
     {
+        this.idInscripcion = idInscripcion;
         this.nombre = nombre;
         this.puntaje = puntaje;
         this.porcentaje = porcentaje;
-        this.idMateria = materia;
     }
 
     // setters y getters
+    public void setId(int id) {
+        this.id = id;
+    }
+    public int getId() {
+        return this.id;
+    }
+
+    public void setIdInscripcion(int idInscripcion) {
+        this.idInscripcion = idInscripcion;
+    }
+    public int getIdInscripcion() {
+        return this.idInscripcion;
+    }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -40,12 +56,5 @@ public class Nota
     }
     public double getPorcentaje() {
         return this.porcentaje;
-    }
-
-    public void setIdMateria(int idMateria) {
-        this.idMateria = idMateria;
-    }
-    public int getIdMateria() {
-        return this.idMateria;
     }
 }

@@ -1,8 +1,7 @@
 package interfaz;
 
 import logica.Materia;
-import logica.Nota;
-import logica.Inscripcion;
+import logica.Reporte;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,13 +10,11 @@ public class MenuNotas extends JPanel
 {
     private final Materia materia;
 
-    private static JLabel textoPuntaje;
+    private JLabel textoPuntaje;
 
     // panel de las notas
-    public static final JPanel panelNotas = new JPanel();
-
-    // private JPanel panelNotas;
-    // private JScrollPane scrollGrade;
+    private JPanel panelNotas = new JPanel();
+    private JScrollPane barraScroll;
 
     // constructor
     public MenuNotas(Materia materia)
@@ -35,7 +32,7 @@ public class MenuNotas extends JPanel
         setBounds(0, 0, Main.ANCHO_VENTANA, Main.ALTURA_VENTANA);
 
         // agrega una barra de desplazamiento vertical al listado de materias
-        JScrollPane barraScroll = WindowComponent.setScrollbar(panelNotas,
+        barraScroll = WindowComponent.setScrollbar(panelNotas,
                                                                 104,
                                                                 60,
                                                                 380,
@@ -88,7 +85,7 @@ public class MenuNotas extends JPanel
                                     () ->
                                     {
                                         // carga las materias desde la base de datos
-                                        Inscripcion.materiaDAO.cargarMaterias(this, MenuInicio.estudiante.getCodigo());
+                                        Reporte.materiaDAO.cargarMaterias(this, MenuInicio.estudiante.getCodigo());
                                         // cambia el panel al menu de las materias
                                         WindowComponent.cambiarPanel(this, MenuInicio.materia);
                                     },
@@ -150,7 +147,11 @@ public class MenuNotas extends JPanel
 
         botonCrear.addActionListener(e -> {
             String nombreNota = campoTexto.getText();
-            Nota nuevaNota = new Nota(nombreNota, 0.0, 0.0, materiaActual.getId());
+            // crea la nota en la base de datos
+            Reporte.notaDAO.crearNota(Reporte.materiaDAO.obtenerIdInscripcion(materiaActual.getId()), nombreNota, panelNotas);
+            // carga las notas nuevamente para mostrar los cambios
+            Reporte.notaDAO.cargarNotas(materiaActual, panelNotas, panelNotas);
+            // cierra el cuadro de dialogo
             dialogo.dispose();
         });
 
@@ -174,5 +175,11 @@ public class MenuNotas extends JPanel
             textoPuntaje.setForeground(Color.decode("#FF6865"));
         }
         WindowComponent.recargar(textoPuntaje);
+    }
+
+    // metodo para obtener el panel de notas
+    public JPanel getPanelNotas()
+    {
+        return panelNotas;
     }
 }

@@ -2,7 +2,7 @@ package interfaz;
 
 // improtaciones de awt
 import datos.DatosMateria;
-import logica.Inscripcion;
+import logica.Reporte;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -144,9 +144,9 @@ public class MenuMateria extends JPanel
                 if (DatosMateria.materiaExiste(codigoMateria, this))
                 {
                     // inserta la inscripción en la base de datos
-                    Inscripcion.materiaDAO.inscribirMateria(codigoMateria,this);
+                    Reporte.materiaDAO.inscribirMateria(codigoMateria,this);
                     // recarga las materias para mostrar los cambios
-                    Inscripcion.materiaDAO.cargarMaterias(this, MenuInicio.estudiante.getCodigo());
+                    Reporte.materiaDAO.cargarMaterias(this, MenuInicio.estudiante.getCodigo());
                     dialogo.dispose();
                 }
                 else

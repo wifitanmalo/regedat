@@ -4,7 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import logica.Estudiante;
-import logica.Inscripcion;
+import logica.Reporte;
 
 public class MenuInicio extends JPanel
 {
@@ -83,12 +83,12 @@ public class MenuInicio extends JPanel
         WindowComponent.eventoBoton(botonEntrar,
                                     () ->
                                     {
-                                        if (Inscripcion.loginEstudiante(this,
+                                        if (Reporte.loginEstudiante(this,
                                                                     campoCodigo,
                                                                     campoClave))
                                         {
-                                            this.estudiante = Inscripcion.estudianteDAO.obtenerEstudiante(Integer.parseInt(campoCodigo.getText().trim()));
-                                            Inscripcion.materiaDAO.cargarMaterias(this,
+                                            estudiante = Reporte.estudianteDAO.obtenerEstudiante(Integer.parseInt(campoCodigo.getText().trim()));
+                                            Reporte.materiaDAO.cargarMaterias(this,
                                                                                 estudiante.getCodigo());
                                             WindowComponent.cambiarPanel(this, materia);
                                             limpiarTodo();
