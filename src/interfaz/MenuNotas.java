@@ -1,20 +1,35 @@
 package interfaz;
 
+// importaciones de awt
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dialog;
+import java.awt.FlowLayout;
+import java.awt.Window;
+
+// importaciones de swing
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+// importaciones de los paquetes
 import logica.Materia;
 import logica.Reporte;
 
-import javax.swing.*;
-import java.awt.*;
-
 public class MenuNotas extends JPanel
 {
+    // materia actual del menu
     private final Materia materia;
 
+    // texto donde se mostrara el puntaje total de la materia
     private JLabel textoPuntaje;
 
-    // panel de las notas
-    private JPanel panelNotas = new JPanel();
-    private JScrollPane barraScroll;
+    // panel donde se mostraran las notas
+    private final JPanel panelNotas = new JPanel();
 
     // constructor
     public MenuNotas(Materia materia)
@@ -23,20 +38,19 @@ public class MenuNotas extends JPanel
         inicializarPanel();
     }
 
-    // method to initialize the main panel
+    // metodo para inicializar el panel
     public void inicializarPanel()
     {
-        // create the main panel
         setLayout(null);
         setBackground(WindowComponent.FONDO_VENTANA);
         setBounds(0, 0, Main.ANCHO_VENTANA, Main.ALTURA_VENTANA);
 
         // agrega una barra de desplazamiento vertical al listado de materias
-        barraScroll = WindowComponent.setScrollbar(panelNotas,
-                                                                104,
-                                                                60,
-                                                                380,
-                                                                270);
+        JScrollPane barraScroll = WindowComponent.setScrollbar(panelNotas,
+                104,
+                60,
+                380,
+                270);
 
         // titulo de las calificaciones
         JLabel tituloNotas = WindowComponent.setTexto("Notas",
@@ -85,15 +99,15 @@ public class MenuNotas extends JPanel
                                     () ->
                                     {
                                         // carga las materias desde la base de datos
-                                        Reporte.materiaDAO.cargarMaterias(this, MenuInicio.estudiante.getCodigo());
+                                        Reporte.materiaDAO.cargarMaterias(this, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
                                         // cambia el panel al menu de las materias
-                                        WindowComponent.cambiarPanel(this, MenuInicio.materia);
+                                        WindowComponent.cambiarPanel(this, MenuInicio.menuMateria);
                                     },
                                     WindowComponent.FONDO_GRIS,
                                     Color.decode("#AAAAAA"),
                                     Color.decode("#C7C8CA"));
 
-        // text where the total score is shown
+        // texto donde el puntaje de la materia es mostrado
         textoPuntaje = WindowComponent.setTexto(String.valueOf(materia.getPuntajeTotal()),
                                                 botonVolver.getX(),
                                                 WindowComponent.yPositivo(botonAgregar, 14),
@@ -118,7 +132,10 @@ public class MenuNotas extends JPanel
         WindowComponent.eventoBoton(botonTotal,
                                     () ->
                                     {
-                                        setTextoPuntaje(materia.getPuntajeTotal());
+                                        // realiza los calculos para actualizar los valores de la materia
+                                        Reporte.materiaDAO.actualizarMateria(materia.getIdInscripcion(), panelNotas);
+                                        // actualiza el texto del puntaje total
+                                        setTextoPuntaje(Reporte.materiaDAO.getPuntajeTotal(materia.getIdInscripcion(), panelNotas));
                                     },
                                     WindowComponent.FONDO_GRIS,
                                     Color.decode("#91BAD6"),
@@ -133,7 +150,7 @@ public class MenuNotas extends JPanel
         add(textoPuntaje);
     }
 
-    // metodo para mostrar un cuadro interactivo
+    // metodo para mostrar un cuadro interactivo para ingresar el nombre de la nota
     public void cuadroNombre(Component contenedor, Materia materiaActual)
     {
         Window ventana = SwingUtilities.getWindowAncestor(contenedor);
@@ -150,7 +167,7 @@ public class MenuNotas extends JPanel
             // crea la nota en la base de datos
             Reporte.notaDAO.crearNota(Reporte.materiaDAO.obtenerIdInscripcion(materiaActual.getId()), nombreNota, panelNotas);
             // carga las notas nuevamente para mostrar los cambios
-            Reporte.notaDAO.cargarNotas(materiaActual, panelNotas, panelNotas);
+            Reporte.notaDAO.cargarNotas(materiaActual, panelNotas);
             // cierra el cuadro de dialogo
             dialogo.dispose();
         });

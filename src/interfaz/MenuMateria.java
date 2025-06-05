@@ -1,9 +1,6 @@
 package interfaz;
 
-// improtaciones de awt
-import datos.DatosMateria;
-import logica.Reporte;
-
+// importaciones de awt
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -11,14 +8,26 @@ import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.Window;
 
-import javax.swing.*;
+// importaciones de swing
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+// improtaciones de los paquetes
+import datos.DatosMateria;
+import logica.Reporte;
 
 public class MenuMateria extends JPanel
 {
     // objeto del contenedor
     private final Container container;
 
-    // panel de las materias
+    // panel donde seran mostradas las materias
     public static final JPanel panelMaterias = new JPanel();
 
     // constructor
@@ -68,6 +77,7 @@ public class MenuMateria extends JPanel
         WindowComponent.eventoBoton(botonAgregar,
                                     () ->
                                     {
+                                        // abre el cuadro de dialogo
                                         cuadroCodigo(panelMaterias);
                                     },
                                     WindowComponent.FONDO_BOTON,
@@ -88,6 +98,7 @@ public class MenuMateria extends JPanel
         WindowComponent.eventoBoton(botonCerrar,
                                     () ->
                                     {
+                                        // cierra la sesion y regresa al menu principal
                                         WindowComponent.cambiarPanel(this, Main.principal);
                                     },
                                     WindowComponent.FONDO_GRIS,
@@ -125,7 +136,7 @@ public class MenuMateria extends JPanel
         container.add(this);
     }
 
-    // metodo para mostrar un cuadro interactivo
+    // metodo para inicializar el cuadro interactivo para ingresar el codigo de la materia
     public void cuadroCodigo(Component contenedor)
     {
         Window ventana = SwingUtilities.getWindowAncestor(contenedor);
@@ -134,7 +145,8 @@ public class MenuMateria extends JPanel
         dialogo.setLayout(new FlowLayout());
         dialogo.setLocationRelativeTo(contenedor);
 
-        JTextField campoTexto = new JTextField(15);
+        JTextField campoTexto = new JTextField(8);
+        WindowComponent.configurarTexto(campoTexto, Color.decode("#3D3D3D"), 1, 14);
         JButton inscribir = new JButton("Vale");
 
         inscribir.addActionListener(e -> {
@@ -146,7 +158,8 @@ public class MenuMateria extends JPanel
                     // inserta la inscripción en la base de datos
                     Reporte.materiaDAO.inscribirMateria(codigoMateria,this);
                     // recarga las materias para mostrar los cambios
-                    Reporte.materiaDAO.cargarMaterias(this, MenuInicio.estudiante.getCodigo());
+                    Reporte.materiaDAO.cargarMaterias(this, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
+                    // cierra el cuadro de dialogo
                     dialogo.dispose();
                 }
                 else
@@ -160,6 +173,7 @@ public class MenuMateria extends JPanel
             }
             catch (NumberFormatException nfe)
             {
+                nfe.getStackTrace();
                 WindowComponent.cuadroMensaje(dialogo,
                                             "Solo puedes ingresar números enteros.",
                                             "Error de entrada",

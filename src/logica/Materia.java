@@ -6,6 +6,7 @@ public class Materia
 {
     // atributos
     private int id;
+    private int idInscripcion;
     private String nombre;
     private int creditos;
 
@@ -16,11 +17,13 @@ public class Materia
     public static final double MINIMO_PUNTAJE = 3.0, MAXIMO_PUNTAJE = 5.0;
 
     // constructor
-    public Materia(int id, String nombre, int creditos)
+    public Materia(int id, int idInscripcion, String nombre, int creditos)
     {
         this.id = id;
+        this.idInscripcion = idInscripcion;
         this.nombre = nombre;
         this.puntajeTotal = 0;
+        this.porcentajeEvaluado = 0;
         this.creditos = creditos;
     }
 
@@ -30,6 +33,13 @@ public class Materia
     }
     public int getId() {
         return id;
+    }
+
+    public void setIdInscripcion(int idInscripcion) {
+        this.idInscripcion = idInscripcion;
+    }
+    public int getIdInscripcion() {
+        return this.idInscripcion;
     }
 
     public void setNombre(String nombre) {

@@ -63,7 +63,6 @@ public class MenuPrincipal extends JPanel
                                     () ->
                                     {
                                         WindowComponent.cambiarPanel(this, inicio);
-                                        System.out.println("iniciar sesion");
                                     },
                                     WindowComponent.FONDO_GRIS,
                                     Color.decode("#AAAAAA"),

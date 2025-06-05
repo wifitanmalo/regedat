@@ -1,15 +1,25 @@
 package interfaz;
 
-import java.awt.*;
-import javax.swing.*;
+// importaciones de awt
+import java.awt.Color;
+import java.awt.Container;
 
+// importaciones de swing
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+// importaciones de los paquetes
 import logica.Estudiante;
 import logica.Reporte;
 
 public class MenuInicio extends JPanel
 {
     // objeto del estudiante actual
-    public static Estudiante estudiante;
+    public static Estudiante ESTUDIANTE_ACTUAL;
 
     // campos de texto
     private JTextField campoCodigo;
@@ -19,18 +29,15 @@ public class MenuInicio extends JPanel
     private final Container contenedor;
 
     // objeto del menu de las materias
-    public static MenuMateria materia;
+    public static MenuMateria menuMateria;
 
     // constructor
     public MenuInicio()
     {
-        this.materia = new MenuMateria();
-
-        materia.setVisible(false);
-
+        this.menuMateria = new MenuMateria();
+        menuMateria.setVisible(false);
         this.contenedor = WindowComponent.getContenedor();
-        contenedor.add(materia);
-
+        contenedor.add(menuMateria);
         iniciarPanel();
     }
 
@@ -62,7 +69,9 @@ public class MenuInicio extends JPanel
         WindowComponent.eventoBoton(botonVolver,
                                     () ->
                                     {
+                                        // cambia el panel al del menu principal
                                         WindowComponent.cambiarPanel(this, Main.principal);
+                                        // limpia todos los campos de texto
                                         limpiarTodo();
                                     },
                                     WindowComponent.FONDO_GRIS,
@@ -83,21 +92,25 @@ public class MenuInicio extends JPanel
         WindowComponent.eventoBoton(botonEntrar,
                                     () ->
                                     {
+                                        // valida si la información del usuario es correcta
                                         if (Reporte.loginEstudiante(this,
                                                                     campoCodigo,
                                                                     campoClave))
                                         {
-                                            estudiante = Reporte.estudianteDAO.obtenerEstudiante(Integer.parseInt(campoCodigo.getText().trim()));
-                                            Reporte.materiaDAO.cargarMaterias(this,
-                                                                                estudiante.getCodigo());
-                                            WindowComponent.cambiarPanel(this, materia);
+                                            // asigna el estudiante actual a la variable estática
+                                            ESTUDIANTE_ACTUAL = Reporte.estudianteDAO.obtenerEstudiante(Integer.parseInt(campoCodigo.getText().trim()));
+                                            // carga las materias del estudiante desde la base de datos
+                                            Reporte.materiaDAO.cargarMaterias(this, ESTUDIANTE_ACTUAL.getCodigo());
+                                            // entra al menu de las materias
+                                            WindowComponent.cambiarPanel(this, menuMateria);
+                                            // limpia los campos de texto
                                             limpiarTodo();
                                         }
                                         else
                                         {
                                             WindowComponent.cuadroMensaje(contenedor,
                                                                         "ID/Contraseña incorrecta.",
-                                                                        "Error de autenticacion",
+                                                                        "Error de autenticación",
                                                                         JOptionPane.ERROR_MESSAGE);
                                         }
                                     },
@@ -160,7 +173,7 @@ public class MenuInicio extends JPanel
         panelCampos.add(campoClave);
     }
 
-    // metodo para limpiar las cajas de texto
+    // metodo para limpiar los campos de texto
     public void limpiarTodo()
     {
         WindowComponent.limpiarCampo(campoCodigo);

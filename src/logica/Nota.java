@@ -16,6 +16,7 @@ public class Nota
                 double puntaje,
                 double porcentaje)
     {
+        this.id = id;
         this.idInscripcion = idInscripcion;
         this.nombre = nombre;
         this.puntaje = puntaje;

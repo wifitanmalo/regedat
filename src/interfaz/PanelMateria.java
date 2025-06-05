@@ -1,8 +1,16 @@
 package interfaz;
 
-import java.awt.*;
-import javax.swing.*;
+// importaciones de awt
+import java.awt.Color;
+import java.awt.Dimension;
 
+// importaciones de swing
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+// importaciones de los paquetes
 import logica.Materia;
 import logica.Reporte;
 
@@ -16,8 +24,7 @@ public class PanelMateria extends JPanel
     private MenuNotas menuNotas;
 
     // paneles de rendimiento
-    private JLabel puntajeTotal;
-    private JLabel totalEvaluado;
+    private JLabel puntajeTotal, totalEvaluado;
 
     // constructor
     public PanelMateria(Materia materia)
@@ -27,7 +34,7 @@ public class PanelMateria extends JPanel
         inicializarPanel();
     }
 
-    // method to add a subject
+    // metodo para inicializar el panel
     public void inicializarPanel()
     {
         setPreferredSize(new Dimension(380, 80));
@@ -42,7 +49,7 @@ public class PanelMateria extends JPanel
         JLabel nombreMateria = WindowComponent.setTexto(materia.getId() + " " + materia.getNombre(), 10, 10, 220, 18);
         WindowComponent.configurarTexto(nombreMateria, WindowComponent.COLOR_FUENTE, 1, 10);
 
-        // text of the total score
+        // texto donde se muestra el puntaje total obtenido
         puntajeTotal = WindowComponent.setTexto(("Puntaje total: 0.0"),
                                                 10,
                                                 WindowComponent.yNegativo(nombreMateria, 2),
@@ -53,7 +60,7 @@ public class PanelMateria extends JPanel
                                         3,
                                         WindowComponent.getAltura(puntajeTotal));
 
-        // text of the total percentage evaluated
+        // texto donde se muestra el porcentaje total evaluado
         totalEvaluado = WindowComponent.setTexto(("Total evaluado: 0.0%"),
                                                 10,
                                                 WindowComponent.yNegativo(puntajeTotal, 2),
@@ -64,7 +71,7 @@ public class PanelMateria extends JPanel
                                         3,
                                         WindowComponent.getAltura(totalEvaluado));
 
-        // button to delete a subject
+        // boton para eliminar una materia
         JButton botonEliminar = WindowComponent.setBoton("x",
                                                         300,
                                                         15,
@@ -87,14 +94,14 @@ public class PanelMateria extends JPanel
                                             // elimina la inscripcion de la materia en la base de datos
                                             Reporte.materiaDAO.eliminarMateria(this.materia.getId(), panelMaterias);
                                             // recarga el panel para mostrar los cambios
-                                            Reporte.materiaDAO.cargarMaterias(panelMaterias, MenuInicio.estudiante.getCodigo());
+                                            Reporte.materiaDAO.cargarMaterias(panelMaterias, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
                                         }
                                     },
                                     botonEliminar.getBackground(),
                                     Color.decode("#FF4F4B"),
                                     Color.decode("#FF1D18"));
 
-        // button to enter on the grades menu
+        // boton para entrar al menu de las notas
         JButton botonNota = WindowComponent.setBoton("+",
                                                     (botonEliminar.getX()-60),
                                                     botonEliminar.getY(),
@@ -109,25 +116,25 @@ public class PanelMateria extends JPanel
                                     () ->
                                     {
                                         // carga las notas de la materia
-                                        Reporte.notaDAO.cargarNotas(materia, menuNotas.getPanelNotas(), this);
+                                        Reporte.notaDAO.cargarNotas(materia, menuNotas.getPanelNotas());
                                         menuNotas.setTextoPuntaje(this.materia.getPuntajeTotal());
-                                        WindowComponent.cambiarPanel(MenuInicio.materia, menuNotas);
+                                        WindowComponent.cambiarPanel(MenuInicio.menuMateria, menuNotas);
                                     },
                                     botonNota.getBackground(),
                                     Color.decode("#C5EF48"),
                                     Color.decode("#9DD100"));
 
-        // add the components on the panel
+        // agrega los componentes al panel
         add(nombreMateria);
         add(puntajeTotal);
         add(totalEvaluado);
         add(botonEliminar);
         add(botonNota);
 
-        // add the subject on the subject box
+        // agrega la materia al panel de las materias
         panelMaterias.add(this);
 
-        // reload the panel to show the changes
+        // recarga el panel para mostrar los cambios
         WindowComponent.recargar(panelMaterias);
     }
 

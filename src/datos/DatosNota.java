@@ -29,7 +29,7 @@ public class DatosNota
     }
 
     // metodo para cargar las notas de una materia desde la base de datos
-    public void cargarNotas(Materia materia, JPanel panelNotas, Container contenedor)
+    public void cargarNotas(Materia materia, JPanel panelNotas)
     {
         String consulta = "SELECT * FROM Nota WHERE idInscripcion = ?";
         try (Connection conectado = Reporte.conectarDB();
@@ -51,7 +51,7 @@ public class DatosNota
                 Nota nuevaNota = new Nota(id, idInscripcion, nombre, valor, porcentaje);
 
                 // crea el panel con la nota creada
-                PanelNota nuevoPanel = new PanelNota(idInscripcion, nuevaNota, panelNotas);
+                PanelNota nuevoPanel = new PanelNota(idInscripcion, materia, nuevaNota, panelNotas);
                 nuevoPanel.setTextoPuntaje(String.valueOf(valor));
                 nuevoPanel.setTextoPorcentaje(String.valueOf(porcentaje));
             }
@@ -61,7 +61,7 @@ public class DatosNota
         catch (SQLException e)
         {
             e.printStackTrace();
-            WindowComponent.cuadroMensaje(contenedor,
+            WindowComponent.cuadroMensaje(panelNotas,
                                         "Error al cargar la base de datos.",
                                         "Database error",
                                         JOptionPane.ERROR_MESSAGE);
@@ -111,18 +111,18 @@ public class DatosNota
     }
 
     // metodo para actualizar una nota en la base de datos
-    public void updateScore(Nota nota, double newScore, Container container)
+    public void actualizarPuntaje(Nota nota, double newScore, Container container)
     {
-        String query = "UPDATE Nota SET valor = ? WHERE id = ? AND idInscripcion = ?";
-        try (Connection isConnected = Reporte.conectarDB();
-             PreparedStatement toUpdate = isConnected.prepareStatement(query))
+        String consulta = "UPDATE Nota SET valor = ? WHERE id = ? AND idInscripcion = ?";
+        try (Connection conectar = Reporte.conectarDB();
+             PreparedStatement actualizar = conectar.prepareStatement(consulta))
         {
-            // grade attributes
-            toUpdate.setDouble(1, newScore);
-            toUpdate.setInt(2, nota.getId());
-            toUpdate.setInt(3, nota.getIdInscripcion());
-            // run the query
-            toUpdate.executeUpdate();
+            // atributos de la nota
+            actualizar.setDouble(1, newScore);
+            actualizar.setInt(2, nota.getId());
+            actualizar.setInt(3, nota.getIdInscripcion());
+            // realiza la consulta
+            actualizar.executeUpdate();
         }
         catch (SQLException e)
         {
@@ -137,7 +137,7 @@ public class DatosNota
     // method to update the percentage of a grade
     public void actualizarPorcentaje(Nota nota, double nuevoPorcentaje, Container contenedor)
     {
-        String consulta = "UPDATE NOta SET porcentaje = ? WHERE id = ? AND idInscripcion = ?";
+        String consulta = "UPDATE Nota SET porcentaje = ? WHERE id = ? AND idInscripcion = ?";
         try (Connection conectar = Reporte.conectarDB();
              PreparedStatement actualizar = conectar.prepareStatement(consulta))
         {

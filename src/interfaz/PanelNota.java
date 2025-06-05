@@ -1,48 +1,50 @@
 package interfaz;
 
-// awt imports
+// importaciones de awt
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-// swing imports
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+// importaciones de swing
+import javax.swing.*;
 
-// package imports
-import logica.Nota;
+// importaciones de los paquetes
 import logica.Materia;
+import logica.Nota;
+import logica.Reporte;
 
 public class PanelNota extends JPanel
 {
-    // panel where the grades are added
-    private final JPanel gradeBox;
+    // panel donde se mostraran las notas agregadas
+    private final JPanel panelNotas;
 
-    // subject and grade objects
+    // materia de la nota
+    private final Materia materia;
+
+    // objeto de la nota actual
     private final Nota nota;
 
-    // text boxes
+    // campos de los valores de la nota
     private JTextField campoPuntaje, campoPorcentaje;
 
     // constructor
-    public PanelNota(int idInscripcion, Nota nota, JPanel panelNotas)
+    public PanelNota(int idInscripcion, Materia materia, Nota nota, JPanel panelNotas)
     {
+        this.materia = materia;
         this.nota = nota;
-        this.gradeBox = panelNotas;
+        this.panelNotas = panelNotas;
         panelNota();
     }
 
-    // method to create a grade
+    // metodo para inicializar el panel
     public void panelNota()
     {
         setPreferredSize(new Dimension(400, 80));
         setBackground(WindowComponent.FONDO_GRIS);
         setLayout(null);
 
-        // text field where you enter the score
+        // campo de texto donde se ingresa el puntaje
         campoPuntaje = WindowComponent.setCampoTexto(80,
                 36,
                 80,
@@ -59,11 +61,34 @@ public class PanelNota extends JPanel
                 try
                 {
                     double nuevoPuntaje = Double.parseDouble(campoPuntaje.getText().trim());
-                    nota.setPuntaje(nuevoPuntaje);
+                    if (nuevoPuntaje < 0)
+                    {
+                        WindowComponent.cuadroMensaje(panelNotas,
+                                                    "El puntaje no puede ser negativo.",
+                                                    "Error de entrada",
+                                                    JOptionPane.ERROR_MESSAGE);
+                        throw new NumberFormatException("----- numero negativo -----");
+                    }
+                    else if (nuevoPuntaje > Materia.MAXIMO_PUNTAJE)
+                    {
+                        WindowComponent.cuadroMensaje(panelNotas,
+                                                    "El puntaje no puede ser mayor que " + Materia.MAXIMO_PUNTAJE + ".",
+                                                    "Error de entrada",
+                                                    JOptionPane.ERROR_MESSAGE);
+                        throw new NumberFormatException("----- error de limite -----");
+                    }
+                    else
+                    {
+                        // actualiza el puntaje de la nota en la base de datos
+                        Reporte.notaDAO.actualizarPuntaje(nota, nuevoPuntaje, panelNotas);
+                    }
                 }
                 catch (NumberFormatException ex)
                 {
-                    nota.setPuntaje(0);
+                    // cambia el puntaje fallido al valor predeterminado
+                    Reporte.notaDAO.actualizarPuntaje(nota, 0.0, panelNotas);
+                    // recarga el panel para mostrar los cambios
+                    Reporte.notaDAO.cargarNotas(materia, panelNotas);
                 }
                 super.keyReleased(e);
             }
@@ -80,7 +105,7 @@ public class PanelNota extends JPanel
                 1,
                 12);
 
-        // text field where you enter the percentage
+        // campo de texto donde se ingresa el porcentaje
         campoPorcentaje = WindowComponent.setCampoTexto(WindowComponent.xPositivo(campoPuntaje, 16),
                 campoPuntaje.getY(),
                 campoPuntaje.getWidth(),
@@ -94,20 +119,43 @@ public class PanelNota extends JPanel
             @Override
             public void keyReleased(KeyEvent e)
             {
-                // Update grade object
                 try
                 {
                     double nuevoPorcentaje = Double.parseDouble(campoPorcentaje.getText().trim());
-                    nota.setPorcentaje(nuevoPorcentaje);
+                    if (nuevoPorcentaje < 0)
+                    {
+                        WindowComponent.cuadroMensaje(panelNotas,
+                                                    "El porcentaje no puede ser negativo.",
+                                                    "Error de entrada",
+                                                    JOptionPane.ERROR_MESSAGE);
+                        throw new NumberFormatException("----- numero negativo -----");
+                    }
+                    else if (nuevoPorcentaje > 100)
+                    {
+                        WindowComponent.cuadroMensaje(panelNotas,
+                                                    "El puntaje no puede ser mayor que 100%.",
+                                                    "Error de entrada",
+                                                    JOptionPane.ERROR_MESSAGE);
+                        throw new NumberFormatException("----- error de limite -----");
+                    }
+                    else
+                    {
+                        // actualiza el porcentaje de la nota en la base de datos
+                        Reporte.notaDAO.actualizarPorcentaje(nota, nuevoPorcentaje, panelNotas);
+                    }
                 }
-                catch (NumberFormatException ex) {
-                    nota.setPorcentaje(0);
+                catch (NumberFormatException ex)
+                {
+                    // cambia el porcentaje fallido al valor predeterminado
+                    Reporte.notaDAO.actualizarPorcentaje(nota, 0.0, panelNotas);
+                    // recarga el panel para mostrar los cambios
+                    Reporte.notaDAO.cargarNotas(materia, panelNotas);
                 }
                 super.keyReleased(e);
             }
         });
 
-        // percentage symbol
+        // texto donde se muestra el simbolo del porcentaje
         JLabel simboloPorcentaje = WindowComponent.setTexto("%",
                 WindowComponent.xPositivo(campoPorcentaje, 6),
                 campoPorcentaje.getY(),
@@ -118,7 +166,7 @@ public class PanelNota extends JPanel
                 1,
                 18);
 
-        // button to delete a grade
+        // boton para eliminar una nota
         JButton botonEliminar = WindowComponent.setBoton("x",
                 300,
                 15,
@@ -132,28 +180,30 @@ public class PanelNota extends JPanel
         WindowComponent.eventoBoton(botonEliminar,
                 () ->
                 {
-                    System.out.println("eliminar nota");
+                    // elimina la nota de la base de datos
+                    Reporte.notaDAO.eliminarNota(nota, panelNotas);
+                    // recarga las notas para mostrar los cambios
+                    Reporte.notaDAO.cargarNotas(materia, panelNotas);
                 },
                 botonEliminar.getBackground(),
                 Color.decode("#FF4F4B"),
                 Color.decode("#FF1D18"));
 
-        // add the components on the panel
+        // agrega los componentes en el panel
         add(nombreNota);
         add(campoPuntaje);
         add(campoPorcentaje);
         add(simboloPorcentaje);
         add(botonEliminar);
 
-        // add the panel to the grade box
-        gradeBox.add(this);
+        // agrega la nota en el panel de las notas
+        panelNotas.add(this);
 
-        // reload the panel to show the changes
-        WindowComponent.recargar(gradeBox);
+        // recarga el panel para mostrar los cambios
+        WindowComponent.recargar(panelNotas);
     }
 
     // setters and getters
-
     public void setTextoPuntaje(String score)
     {
         campoPuntaje.setText(score);

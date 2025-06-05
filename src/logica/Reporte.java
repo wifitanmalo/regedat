@@ -1,11 +1,22 @@
 package logica;
 
-import java.awt.*;
+// importaciones de awt
+import java.awt.Container;
+
+// importaciones de security
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import javax.swing.*;
+
+// importaciones de swing
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 // importaciones de SQL
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 // importaciones de los paquetes
 import interfaz.WindowComponent;
@@ -32,7 +43,7 @@ public class Reporte
     public static String hashSHA256(String clave) throws Exception
     {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] hashBytes = md.digest(clave.getBytes("UTF-8"));
+        byte[] hashBytes = md.digest(clave.getBytes(StandardCharsets.UTF_8));
         StringBuilder sb = new StringBuilder();
         for (byte b : hashBytes)
         {
@@ -58,12 +69,12 @@ public class Reporte
         try (Connection conn = conectarDB())
         {
             int id = Integer.parseInt(codigo.getText().trim());
-            String hashContrasena = hashSHA256(contrasena.getText());
+            String hashClave = hashSHA256(contrasena.getText());
 
             String query = "SELECT * FROM Estudiante WHERE codigo = ? AND claveHash = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, id);
-            stmt.setString(2, hashContrasena);
+            stmt.setString(2, hashClave);
 
             ResultSet rs = stmt.executeQuery();
             return rs.next(); // true si encontró el estudiante
