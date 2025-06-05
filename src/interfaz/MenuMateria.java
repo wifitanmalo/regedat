@@ -1,9 +1,13 @@
 package interfaz;
 
-import logica.Materia;
-import logica.Reporte;
+// improtaciones de awt
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dialog;
+import java.awt.FlowLayout;
+import java.awt.Window;
 
-import java.awt.*;
 import javax.swing.*;
 
 public class MenuMateria extends JPanel
@@ -14,16 +18,9 @@ public class MenuMateria extends JPanel
     // panel de las materias
     public static final JPanel panelMaterias = new JPanel();
 
-    // objeto del menu de crear materias
-    private final CrearMateria crearMateria;
-
     // constructor
     public MenuMateria()
     {
-        this.crearMateria = new CrearMateria();
-
-        crearMateria.setVisible(false);
-
         this.container = WindowComponent.getContenedor();
         inicializarPanel();
     }
@@ -68,7 +65,7 @@ public class MenuMateria extends JPanel
         WindowComponent.eventoBoton(botonAgregar,
                                     () ->
                                     {
-                                        WindowComponent.cambiarPanel(this, crearMateria);
+                                        cuadroCodigo(this);
                                     },
                                     WindowComponent.FONDO_BOTON,
                                     WindowComponent.FONDO_SOBRE_BOTON,
@@ -89,7 +86,6 @@ public class MenuMateria extends JPanel
                                     () ->
                                     {
                                         WindowComponent.cambiarPanel(this, Main.principal);
-                                        System.out.println("cerrar sesion");
                                     },
                                     WindowComponent.FONDO_GRIS,
                                     Color.decode("#AAAAAA"),
@@ -124,19 +120,28 @@ public class MenuMateria extends JPanel
 
         // agrega los componentes al contenedor
         container.add(this);
-        container.add(crearMateria);
     }
 
-    // method to load the grades
-    public void refrescarMaterias()
+    // metodo para mostrar un cuadro interactivo
+    public void cuadroCodigo(Component contenedor)
     {
-        panelMaterias.removeAll();
-        for(Materia materia : Reporte.materiaDAO.getListaMaterias())
-        {
-            PanelMateria panelActual = new PanelMateria(materia);
-            panelActual.set_score_label(materia.getPuntajeTotal());
-            panelActual.set_evaluated_label(materia.getPorcentajeEvaluado());
-            WindowComponent.recargar(panelMaterias);
-        }
+        Window ventana = SwingUtilities.getWindowAncestor(contenedor);
+        JDialog dialogo = new JDialog(ventana, "Ingresar código", Dialog.ModalityType.APPLICATION_MODAL);
+        dialogo.setSize(250, 100);
+        dialogo.setLayout(new FlowLayout());
+        dialogo.setLocationRelativeTo(contenedor);
+
+        JTextField campoTexto = new JTextField(15);
+        JButton inscribir = new JButton("Vale");
+
+        inscribir.addActionListener(e -> {
+            String codigoMateria = campoTexto.getText();
+            dialogo.dispose();
+        });
+
+        dialogo.add(new JLabel("Código: "));
+        dialogo.add(campoTexto);
+        dialogo.add(inscribir);
+        dialogo.setVisible(true);
     }
 }

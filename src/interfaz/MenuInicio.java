@@ -1,16 +1,19 @@
 package interfaz;
 
 import java.awt.*;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
+import javax.swing.*;
+
+import logica.Estudiante;
+import logica.Inscripcion;
 
 public class MenuInicio extends JPanel
 {
+    // objeto del estudiante actual
+    public static Estudiante estudiante;
+
     // campos de texto
-    private JTextField campoCorreo;
-    private JTextField campoClave;
+    private JTextField campoCodigo;
+    private JPasswordField campoClave;
 
     // objeto del contenedor
     private final Container contenedor;
@@ -60,7 +63,6 @@ public class MenuInicio extends JPanel
                                     () ->
                                     {
                                         WindowComponent.cambiarPanel(this, Main.principal);
-                                        System.out.println("volver a inicio");
                                         limpiarTodo();
                                     },
                                     WindowComponent.FONDO_GRIS,
@@ -79,17 +81,32 @@ public class MenuInicio extends JPanel
                                         1,
                                         12);
         WindowComponent.eventoBoton(botonEntrar,
-                                    () -> {
-                                            materia.refrescarMaterias();
+                                    () ->
+                                    {
+                                        if (Inscripcion.loginEstudiante(this,
+                                                                    campoCodigo,
+                                                                    campoClave))
+                                        {
+                                            this.estudiante = Inscripcion.estudianteDAO.obtenerEstudiante(Integer.parseInt(campoCodigo.getText().trim()));
+                                            Inscripcion.materiaDAO.cargarMaterias(this,
+                                                                                estudiante.getCodigo());
                                             WindowComponent.cambiarPanel(this, materia);
                                             limpiarTodo();
+                                        }
+                                        else
+                                        {
+                                            WindowComponent.cuadroMensaje(contenedor,
+                                                                        "ID/Contraseña incorrecta.",
+                                                                        "Error de autenticacion",
+                                                                        JOptionPane.ERROR_MESSAGE);
+                                        }
                                     },
                                     WindowComponent.FONDO_BOTON,
                                     WindowComponent.FONDO_SOBRE_BOTON,
                                     WindowComponent.FONDO_PRESIONAR_BOTON);
 
         // titulo del correo
-        JLabel tituloCorreo = WindowComponent.setTexto("Correo",
+        JLabel tituloCorreo = WindowComponent.setTexto("Código",
                                                         (panelCampos.getWidth()-260)/2,
                                                         20,
                                                         260,
@@ -100,11 +117,12 @@ public class MenuInicio extends JPanel
                                         WindowComponent.getAltura(tituloCorreo));
 
         // campo de texto del correo
-        campoCorreo = WindowComponent.setCampoTexto(tituloCorreo.getX(),
+        campoCodigo = WindowComponent.setCampoTexto(tituloCorreo.getX(),
                                                     WindowComponent.yNegativo(tituloCorreo,5),
                                                     260,
                                                     30);
-        WindowComponent.configurarTexto(campoCorreo,
+
+        WindowComponent.configurarTexto(campoCodigo,
                                         Color.decode("#3D3D3D"),
                                         1,
                                         18);
@@ -112,7 +130,7 @@ public class MenuInicio extends JPanel
         // titulo de la clave
         JLabel tituloClave = WindowComponent.setTexto("Contraseña",
                                                     (panelCampos.getWidth()-260)/2,
-                                                    WindowComponent.yNegativo(campoCorreo,10),
+                                                    WindowComponent.yNegativo(campoCodigo,10),
                                                     260,
                                                     22);
         WindowComponent.configurarTexto(tituloClave,
@@ -121,7 +139,7 @@ public class MenuInicio extends JPanel
                                         WindowComponent.getAltura(tituloClave));
 
         // campo de texto del correo
-        campoClave = WindowComponent.setCampoTexto(tituloClave.getX(),
+        campoClave = WindowComponent.setCampoClave(tituloClave.getX(),
                                                     WindowComponent.yNegativo(tituloClave,5),
                                                     260,
                                                     30);
@@ -137,7 +155,7 @@ public class MenuInicio extends JPanel
 
         // agrega los componentes al panel
         panelCampos.add(tituloCorreo);
-        panelCampos.add(campoCorreo);
+        panelCampos.add(campoCodigo);
         panelCampos.add(tituloClave);
         panelCampos.add(campoClave);
     }
@@ -145,7 +163,7 @@ public class MenuInicio extends JPanel
     // metodo para limpiar las cajas de texto
     public void limpiarTodo()
     {
-        WindowComponent.limpiarCampo(campoCorreo);
+        WindowComponent.limpiarCampo(campoCodigo);
         WindowComponent.limpiarCampo(campoClave);
     }
 }

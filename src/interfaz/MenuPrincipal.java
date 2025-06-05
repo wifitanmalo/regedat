@@ -6,33 +6,29 @@ import java.awt.Color;
 import java.awt.Container;
 import javax.swing.*;
 
-import logica.Reporte;
+import logica.Inscripcion;
 
 public class MenuPrincipal extends JPanel
 {
     // objetos de los menu
     private final MenuInicio inicio;
-    private final MenuRegistro registro;
 
     // objeto del contenedor
     private final Container contenedor;
 
     // objeto del reporte
-    public static Reporte reporte;
+    public static Inscripcion reporte;
 
     // constructor
     public MenuPrincipal()
     {
-        this.registro = new MenuRegistro();
         this.inicio = new MenuInicio();
-        this.reporte = new Reporte();
+        this.reporte = new Inscripcion();
 
         inicio.setVisible(false);
-        registro.setVisible(false);
 
         this.contenedor = WindowComponent.getContenedor();
         contenedor.add(inicio);
-        contenedor.add(registro);
 
         iniciarPanel();
     }
@@ -73,27 +69,6 @@ public class MenuPrincipal extends JPanel
                                     Color.decode("#AAAAAA"),
                                     Color.decode("#C7C8CA"));
 
-        // agrega el boton para iniciar sesion
-        JButton botonRegistro = WindowComponent.setBoton("Registrar",
-                                                        WindowComponent.xPositivo(botonIniciar, 10),
-                                                        botonIniciar.getY(),
-                                                        98,
-                                                        50,
-                                                        WindowComponent.FONDO_BOTON);
-        WindowComponent.configurarTexto(botonRegistro,
-                                        WindowComponent.COLOR_FUENTE,
-                                        1,
-                                        12);
-        WindowComponent.eventoBoton(botonRegistro,
-                                    () ->
-                                    {
-                                        WindowComponent.cambiarPanel(this, registro);
-                                        System.out.println("registrar usuario");
-                                    },
-                                    WindowComponent.FONDO_BOTON,
-                                    WindowComponent.FONDO_SOBRE_BOTON,
-                                    WindowComponent.FONDO_PRESIONAR_BOTON);
-
         // agrega el boton para mostrar la informacion del sistema
         JButton botonInformacion = WindowComponent.setBoton("i",
                                                         Main.ANCHO_VENTANA -80,
@@ -114,11 +89,10 @@ public class MenuPrincipal extends JPanel
                                     Color.decode("#91BAD6"),
                                     Color.decode("#528AAE"));
 
+        // agrega los componentes al contenedor
         add(botonIniciar);
-        add(botonRegistro);
         add(botonInformacion);
         add(logo);
-
         contenedor.add(this);
     }
 }

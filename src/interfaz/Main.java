@@ -1,14 +1,15 @@
 package interfaz;
 
+// importaciones de swing
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 public class Main extends JFrame
 {
-    // medidas de la ventana
+    // dimensiones de la ventana
     public static final int ANCHO_VENTANA=600, ALTURA_VENTANA=400;
 
-    // objeto del menu principal
+    // objeto estático del menu principal
     public static MenuPrincipal principal;
 
     // constructor

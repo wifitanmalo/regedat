@@ -2,18 +2,22 @@ package interfaz;
 
 import logica.Materia;
 import logica.Nota;
+import logica.Inscripcion;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MenuNotas extends JPanel
 {
-    private Materia materia;
+    private final Materia materia;
 
     private static JLabel textoPuntaje;
 
     // panel de las notas
     public static final JPanel panelNotas = new JPanel();
+
+    // private JPanel panelNotas;
+    // private JScrollPane scrollGrade;
 
     // constructor
     public MenuNotas(Materia materia)
@@ -84,7 +88,9 @@ public class MenuNotas extends JPanel
         WindowComponent.eventoBoton(botonVolver,
                                     () ->
                                     {
-                                        MenuInicio.materia.refrescarMaterias();
+                                        // carga las materias desde la base de datos
+                                        Inscripcion.materiaDAO.cargarMaterias(this, MenuInicio.estudiante.getCodigo());
+                                        // cambia el panel al menu de las materias
                                         WindowComponent.cambiarPanel(this, MenuInicio.materia);
                                     },
                                     WindowComponent.FONDO_GRIS,
@@ -118,7 +124,6 @@ public class MenuNotas extends JPanel
                                     {
                                         materia.calcularPuntaje();
                                         setTextoPuntaje(materia.getPuntajeTotal());
-                                        System.out.println("puntaje total: " + materia.getPuntajeTotal());
                                     },
                                     WindowComponent.FONDO_GRIS,
                                     Color.decode("#91BAD6"),
@@ -140,7 +145,7 @@ public class MenuNotas extends JPanel
         JDialog dialogo = new JDialog(ventana, "Ingresar nombre", Dialog.ModalityType.APPLICATION_MODAL);
         dialogo.setSize(250, 100);
         dialogo.setLayout(new FlowLayout());
-        dialogo.setLocationRelativeTo(contenedor);  // Se posiciona relativo al componente dado
+        dialogo.setLocationRelativeTo(contenedor);
 
         JTextField campoTexto = new JTextField(15);
         JButton botonCrear = new JButton("Vale");

@@ -4,7 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import logica.Materia;
-import logica.Reporte;
+import logica.Inscripcion;
 
 public class PanelMateria extends JPanel
 {
@@ -78,11 +78,11 @@ public class PanelMateria extends JPanel
                                                 "You want to delete this subject?",
                                                 "Delete subject",
                                                 JOptionPane.YES_NO_OPTION);
-                                        if(choice == JOptionPane.YES_OPTION && Reporte.materiaDAO.getListaMaterias().contains(materia))
+                                        if(choice == JOptionPane.YES_OPTION && Inscripcion.materiaDAO.getListaMaterias().contains(materia))
                                         {
                                             // elimina la materia del archivo/panel
                                             panelMaterias.remove(this);
-                                            Reporte.materiaDAO.eliminarMateria(materia);
+                                            Inscripcion.materiaDAO.eliminarMateria(materia);
 
                                             // recarga el panel para mostrar los cambios
                                             WindowComponent.recargar(panelMaterias);

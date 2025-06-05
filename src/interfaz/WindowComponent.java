@@ -93,6 +93,18 @@ public class WindowComponent
         return campoTexto;
     }
 
+    // metodo para añadir un campo de las claves
+    public static JPasswordField setCampoClave(int x,
+                                               int y,
+                                               int ancho,
+                                               int largo)
+    {
+        JPasswordField campoClave = new JPasswordField();
+        campoClave.setBounds(x, y, ancho, largo);
+        campoClave.setEchoChar('•');
+        return campoClave;
+    }
+
     // metodo para limpiar un campo de texto
     public static void limpiarCampo(JTextField text_box)
     {
