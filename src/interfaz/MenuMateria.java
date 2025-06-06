@@ -30,6 +30,9 @@ public class MenuMateria extends JPanel
     // panel donde seran mostradas las materias
     public static final JPanel panelMaterias = new JPanel();
 
+    // objeto del menu del listado de materias
+    private MenuListado menuListado;
+
     // constructor
     public MenuMateria()
     {
@@ -44,6 +47,11 @@ public class MenuMateria extends JPanel
         setLayout(null);
         setBackground(WindowComponent.FONDO_VENTANA);
         setBounds(0, 0, Main.ANCHO_VENTANA, Main.ALTURA_VENTANA);
+
+        // genera el menu de listado de materias
+        menuListado = new MenuListado();
+        menuListado.setVisible(false);
+        container.add(menuListado);
 
         // agrega una barra de desplazamiento vertical al listado de materias
         JScrollPane barraScroll = WindowComponent.setScrollbar(panelMaterias,
@@ -98,8 +106,15 @@ public class MenuMateria extends JPanel
         WindowComponent.eventoBoton(botonCerrar,
                                     () ->
                                     {
-                                        // cierra la sesion y regresa al menu principal
-                                        WindowComponent.cambiarPanel(this, Main.principal);
+                                        int choice = JOptionPane.showConfirmDialog(panelMaterias,
+                                                                                "¿Quieres cerrar la sesión?",
+                                                                                "Cerrar sesión",
+                                                                                JOptionPane.YES_NO_OPTION);
+                                        if(choice == JOptionPane.YES_OPTION)
+                                        {
+                                            // cierra la sesion y regresa al menu principal
+                                            WindowComponent.cambiarPanel(this, Main.principal);
+                                        }
                                     },
                                     WindowComponent.FONDO_GRIS,
                                     Color.decode("#AAAAAA"),
@@ -125,10 +140,32 @@ public class MenuMateria extends JPanel
                                     Color.decode("#91BAD6"),
                                     Color.decode("#528AAE"));
 
+        // agrega el boton para cerrar sesion
+        JButton botonListado = WindowComponent.setBoton("Listado",
+                                                        botonReporte.getX(),
+                                                        WindowComponent.yNegativo(botonReporte, 20),
+                                                        78,
+                                                        50,
+                                                        WindowComponent.FONDO_GRIS);
+        WindowComponent.configurarTexto(botonListado,
+                                        WindowComponent.COLOR_FUENTE,
+                                        1,
+                                        10);
+        WindowComponent.eventoBoton(botonListado,
+                                    () ->
+                                    {
+                                        // cierra la sesion y regresa al menu principal
+                                        WindowComponent.cambiarPanel(this, menuListado);
+                                    },
+                                    WindowComponent.FONDO_GRIS,
+                                    Color.decode("#91BAD6"),
+                                    Color.decode("#528AAE"));
+
         // agrega los componentes al panel
         add(botonAgregar);
         add(botonCerrar);
         add(botonReporte);
+        add(botonListado);
         add(tituloMaterias);
         add(barraScroll);
 

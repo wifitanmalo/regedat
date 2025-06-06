@@ -1,8 +1,6 @@
 package interfaz;
 
 // importaciones de swing
-import logica.Reporte;
-
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 

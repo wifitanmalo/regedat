@@ -1,15 +1,12 @@
 package logica;
 
 // importaciones de awt
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Container;
 
 // importaciones de security
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-
-// importaciones de swing
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 // importaciones de SQL
 import java.sql.Connection;
@@ -17,6 +14,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+// importaciones de swing
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 // importaciones de los paquetes
 import interfaz.MenuMateria;
@@ -98,11 +99,10 @@ public class Reporte
     }
 
     // metodo para evaluar si una materia se encuentra en riesgo o no
-    public static void evaluarRiesgo(
-            double puntajeActual,
-            double porcentajeEvaluado,
-            PanelMateria panel,
-            boolean popUps
+    public static void evaluarRiesgo(double puntajeActual,
+                                    double porcentajeEvaluado,
+                                    PanelMateria panel,
+                                    boolean popUps
     )
     {
         if (puntajeActual >= Materia.MINIMO_PUNTAJE) // se ha aprobado la materia
@@ -115,7 +115,8 @@ public class Reporte
                         JOptionPane.INFORMATION_MESSAGE
                 );
             }
-            panel.setBackground(Color.decode("#2E6F40")); // verde
+            panel.setBackground(Color.decode("#C5EF48")); // panel verde limon
+            panel.setTextoColor(Color.decode("#64820A")); // texto verde limon oscuro
             return;
         }
 
@@ -134,8 +135,8 @@ public class Reporte
                         JOptionPane.WARNING_MESSAGE
                 );
             }
-            panel.setBackground(WindowComponent.FONDO_BOTON); // rojo
-            panel.setTextoColor(Color.WHITE);
+            panel.setBackground(Color.decode("#FF746C")); // panel rojo pastel
+            panel.setTextoColor(Color.decode("#BA2820")); // texto rojo
         }
         else if (notaRestante >= 4.0) // riesgo alto, necesita una nota casi perfecta para aprobar
         {
@@ -152,8 +153,8 @@ public class Reporte
                                                 JOptionPane.WARNING_MESSAGE
                 );
             }
-            panel.setBackground(Color.decode("#E86100")); // naranja fuerte
-            panel.setTextoColor(Color.WHITE);
+            panel.setBackground(Color.decode("#FFB347")); // panel naranja pastel
+            panel.setTextoColor(Color.decode("#E86100")); // texto naranja fuerte
         }
         else if (notaRestante >= Materia.MINIMO_PUNTAJE) // riesgo medio, necesita una nota promedio para aprobar
         {
@@ -170,8 +171,8 @@ public class Reporte
                         JOptionPane.WARNING_MESSAGE
                 );
             }
-            panel.setBackground(Color.decode("#FDFD96")); // amarillo
-            panel.setTextoColor(Color.decode("#000000"));
+            panel.setBackground(Color.decode("#FDFD96")); // panel amarillo pastel
+            panel.setTextoColor(Color.decode("#5E5E00")); // texto amarillo oscuro
         }
         else
         {
@@ -188,15 +189,15 @@ public class Reporte
                         JOptionPane.INFORMATION_MESSAGE
                 );
             }
-            panel.setBackground(WindowComponent.FONDO_GRIS); // gris
-            panel.setTextoColor(Color.WHITE);
+            panel.setBackground(Color.LIGHT_GRAY); // panel gris claro
+            panel.setTextoColor(Color.decode("#515151")); // texto gris
         }
     }
 
-    public static double calcularNotaRestante(
-            double puntajeActual,
-            double porcentajeEvaluado,
-            double minAprobatorio
+    // metodo para calcular cuánto hay que sacar en el resto de la materia para aprobarla
+    public static double calcularNotaRestante(double puntajeActual,
+                                                double porcentajeEvaluado,
+                                                double minAprobatorio
     ) {
         // 1) Si ya completó el 100%:
         if (porcentajeEvaluado >= 100.0) {

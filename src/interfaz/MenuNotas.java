@@ -50,9 +50,9 @@ public class MenuNotas extends JPanel
 
         // agrega una barra de desplazamiento vertical al listado de materias
         JScrollPane barraScroll = WindowComponent.setScrollbar(panelNotas,
-                104,
+                124,
                 60,
-                380,
+                340,
                 270);
 
         // titulo de las calificaciones
@@ -68,7 +68,7 @@ public class MenuNotas extends JPanel
 
         // agrega el boton para crear materias
         JButton botonAgregar = WindowComponent.setBoton("+",
-                                                        16,
+                                                        20,
                                                         barraScroll.getY() + ((barraScroll.getHeight()-50)/2),
                                                         50,
                                                         50,
@@ -123,7 +123,7 @@ public class MenuNotas extends JPanel
 
         // agrega el boton para calcular el puntaje total de la materia
         JButton botonTotal = WindowComponent.setBoton("Total",
-                                                        Main.ANCHO_VENTANA-104,
+                                                        Main.ANCHO_VENTANA-114,
                                                         botonAgregar.getY(),
                                                         78,
                                                         50,
@@ -193,7 +193,7 @@ public class MenuNotas extends JPanel
         textoPuntaje.setText(String.valueOf(puntaje));
         if(puntaje >= Materia.MINIMO_PUNTAJE)
         {
-            textoPuntaje.setForeground(Color.decode("#C5EF48"));
+            textoPuntaje.setForeground(Color.decode("#64820A"));
         }
         else
         {

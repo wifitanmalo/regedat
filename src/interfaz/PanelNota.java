@@ -40,12 +40,12 @@ public class PanelNota extends JPanel
     // metodo para inicializar el panel
     public void panelNota()
     {
-        setPreferredSize(new Dimension(400, 80));
+        setPreferredSize(new Dimension(340, 80));
         setBackground(WindowComponent.FONDO_GRIS);
         setLayout(null);
 
         // campo de texto donde se ingresa el puntaje
-        campoPuntaje = WindowComponent.setCampoTexto(80,
+        campoPuntaje = WindowComponent.setCampoTexto(20,
                 36,
                 80,
                 30);
@@ -168,11 +168,11 @@ public class PanelNota extends JPanel
 
         // boton para eliminar una nota
         JButton botonEliminar = WindowComponent.setBoton("x",
-                300,
+                260,
                 15,
                 50,
                 50,
-                WindowComponent.FONDO_BOTON);
+                Color.decode("#4D5156"));
         WindowComponent.configurarTexto(botonEliminar,
                 WindowComponent.COLOR_FUENTE,
                 1,
@@ -185,7 +185,7 @@ public class PanelNota extends JPanel
                     // recarga las notas para mostrar los cambios
                     Reporte.notaDAO.cargarNotas(materia, panelNotas);
                 },
-                botonEliminar.getBackground(),
+                Color.decode("#4D5156"),
                 Color.decode("#FF4F4B"),
                 Color.decode("#FF1D18"));
 

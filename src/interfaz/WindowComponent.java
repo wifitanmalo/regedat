@@ -44,7 +44,7 @@ public class WindowComponent
     }
 
     // metodo para añadir una barra de desplazamiento
-    public static JScrollPane setScrollbar(JPanel panel,
+    public static JScrollPane setScrollbar(Container panel,
                                              int x,
                                              int y,
                                              int ancho,

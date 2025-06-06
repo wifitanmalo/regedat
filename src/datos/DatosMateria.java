@@ -4,7 +4,8 @@ package datos;
 import java.awt.Container;
 
 // importaciones de swing
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 // importaciones de SQL
 import java.sql.Connection;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 
 import interfaz.MenuInicio;
 import interfaz.MenuMateria;
+import logica.Carrera;
 import logica.Materia;
 import logica.Reporte;
 import interfaz.PanelMateria;
@@ -289,6 +291,76 @@ public class DatosMateria
                                         "Error al actualizar la materia.",
                                         "Database error",
                                         JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // metodo para cargar las carreras desde la base de datos
+    public void cargarCarreras(JComboBox listadoCarreras, Carrera opcionTodas, Container contenedor)
+    {
+        // limpia todas las materias previas
+        listadoCarreras.removeAllItems();
+        // agrega la opción de todas las materias
+        listadoCarreras.addItem(opcionTodas);
+
+        String consulta = "SELECT id, nombre FROM Carrera ORDER BY nombre";
+        try (Connection conectar = Reporte.conectarDB();
+             PreparedStatement estado = conectar.prepareStatement(consulta);
+             ResultSet carrera = estado.executeQuery())
+        {
+            while (carrera.next())
+            {
+                int id = carrera.getInt("id");
+                String nombre = carrera.getString("nombre");
+                listadoCarreras.addItem(new Carrera(id, nombre));
+            }
+        } catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(contenedor,
+                    "Error al cargar las carreras.",
+                    "Database error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // metodo para obtener todas las materias por carrera desde la base de datos
+    public void listarMaterias(int idCarrera, DefaultTableModel modeloTabla, Container contenedor)
+    {
+        // Limpiar filas previas
+        modeloTabla.setRowCount(0);
+
+        String consultaTodas = "SELECT id, nombre FROM Materia ORDER BY nombre";
+        String consultaPorCarrera = "SELECT m.id, m.nombre " +
+                "FROM CarreraMateria cm " +
+                "JOIN Materia m ON cm.idMateria = m.id " +
+                "WHERE cm.idCarrera = ? " +
+                "ORDER BY m.nombre";
+
+        try (Connection conectar = Reporte.conectarDB();
+             PreparedStatement listado = idCarrera < 0
+                     ? conectar.prepareStatement(consultaTodas)
+                     : conectar.prepareStatement(consultaPorCarrera))
+        {
+            if (idCarrera >= 0)
+            {
+                listado.setInt(1, idCarrera);
+            }
+            try (ResultSet materia = listado.executeQuery())
+            {
+                while (materia.next())
+                {
+                    int codigo = materia.getInt("id");
+                    String nombre = materia.getString("nombre");
+                    modeloTabla.addRow(new Object[]{codigo, nombre});
+                }
+            }
+        } catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(contenedor,
+                    "Error al cargar el listado de materias.",
+                    "Database error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 }
