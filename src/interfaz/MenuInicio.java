@@ -1,16 +1,10 @@
 package interfaz;
 
 // importaciones de awt
-import java.awt.Color;
-import java.awt.Container;
+import java.awt.*;
 
 // importaciones de swing
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 // importaciones de los paquetes
 import logica.Estudiante;
@@ -31,9 +25,13 @@ public class MenuInicio extends JPanel
     // objeto del menu de las materias
     public static MenuMateria menuMateria;
 
+    // objeto del reporte
+    public static Reporte reporte;
+
     // constructor
     public MenuInicio()
     {
+        this.reporte = new Reporte();
         this.menuMateria = new MenuMateria();
         menuMateria.setVisible(false);
         this.contenedor = WindowComponent.getContenedor();
@@ -48,40 +46,45 @@ public class MenuInicio extends JPanel
         setBackground(WindowComponent.FONDO_VENTANA);
         setBounds(0, 0, Main.ANCHO_VENTANA, Main.ALTURA_VENTANA);
 
+        // agrega el boton para mostrar la informacion del sistema
+        JButton botonInformacion = WindowComponent.setBoton("i",
+                Main.ANCHO_VENTANA -80,
+                20,
+                50,
+                50,
+                WindowComponent.FONDO_GRIS);
+        WindowComponent.configurarTexto(botonInformacion,
+                WindowComponent.COLOR_FUENTE,
+                1,
+                20);
+        WindowComponent.eventoBoton(botonInformacion,
+                () ->
+                {
+                    System.out.println("mostrar informacion");
+                },
+                WindowComponent.FONDO_GRIS,
+                Color.decode("#91BAD6"),
+                Color.decode("#528AAE"));
+
         // agrega un panel con los campos de texto
         JPanel panelCampos = WindowComponent.setPanel(WindowComponent.FONDO_BOTON,
                                                     (this.getWidth()/2) - (300/2),
-                                                    (this.getHeight()-210)/2,
+                                                    180,
                                                     300,
                                                     170);
 
-        // agrega el boton de regresar
-        JButton botonVolver = WindowComponent.setBoton("Volver",
-                                                        panelCampos.getX()/4,
-                                                        161,
-                                                        78,
-                                                        50,
-                                                        WindowComponent.FONDO_GRIS);
-        WindowComponent.configurarTexto(botonVolver,
-                                        WindowComponent.COLOR_FUENTE,
-                                        1,
-                                        12);
-        WindowComponent.eventoBoton(botonVolver,
-                                    () ->
-                                    {
-                                        // cambia el panel al del menu principal
-                                        WindowComponent.cambiarPanel(this, Main.principal);
-                                        // limpia todos los campos de texto
-                                        limpiarTodo();
-                                    },
-                                    WindowComponent.FONDO_GRIS,
-                                    Color.decode("#AAAAAA"),
-                                    Color.decode("#C7C8CA"));
+        ImageIcon icon = new ImageIcon("logoUnivalle.jpg");
+        Image imagen = icon.getImage().getScaledInstance(93, 140, Image.SCALE_SMOOTH);
+        JLabel logo = new JLabel(new ImageIcon(imagen));
+        logo.setBounds( (Main.ANCHO_VENTANA-113)/2,
+                WindowComponent.yPositivo(panelCampos, 1),
+                113,
+                160);
 
         // agrega el boton de confirmacion
         JButton botonEntrar = WindowComponent.setBoton("Entrar",
                                                             WindowComponent.xPositivo(panelCampos, 29),
-                                                            botonVolver.getY(),
+                                                            panelCampos.getY(),
                                                             78,
                                                             50,
                                                             WindowComponent.FONDO_BOTON);
@@ -162,8 +165,9 @@ public class MenuInicio extends JPanel
                                         18);
 
         // agrega los componentes al contenedor
+        add(botonInformacion);
         add(panelCampos);
-        add(botonVolver);
+        add(logo);
         add(botonEntrar);
 
         // agrega los componentes al panel
@@ -171,6 +175,8 @@ public class MenuInicio extends JPanel
         panelCampos.add(campoCodigo);
         panelCampos.add(tituloClave);
         panelCampos.add(campoClave);
+
+        contenedor.add(this);
     }
 
     // metodo para limpiar los campos de texto

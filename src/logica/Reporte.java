@@ -1,7 +1,7 @@
 package logica;
 
 // importaciones de awt
-import java.awt.Container;
+import java.awt.*;
 
 // importaciones de security
 import java.nio.charset.StandardCharsets;
@@ -19,6 +19,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 // importaciones de los paquetes
+import interfaz.MenuMateria;
+import interfaz.PanelMateria;
 import interfaz.WindowComponent;
 import datos.DatosEstudiante;
 import datos.DatosMateria;
@@ -93,5 +95,121 @@ public class Reporte
             e.printStackTrace();
         }
         return false;
+    }
+
+    // metodo para evaluar si una materia se encuentra en riesgo o no
+    public static void evaluarRiesgo(
+            double puntajeActual,
+            double porcentajeEvaluado,
+            PanelMateria panel,
+            boolean popUps
+    )
+    {
+        if (puntajeActual >= Materia.MINIMO_PUNTAJE) // se ha aprobado la materia
+        {
+            if (popUps) {
+                WindowComponent.cuadroMensaje(
+                        MenuMateria.panelMaterias,
+                        "¡Has aprobado la materia!",
+                        "¡Felicitaciones!",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+            panel.setBackground(Color.decode("#2E6F40")); // verde
+            return;
+        }
+
+        // calcula cuánto se necesita en el restante para llegar al minimo aprobatorio
+        double notaRestante = calcularNotaRestante(puntajeActual, porcentajeEvaluado, Materia.MINIMO_PUNTAJE);
+
+        // se ha perdido la materia
+        if (notaRestante > Materia.MAXIMO_PUNTAJE)
+        {
+            if (popUps)
+            {
+                WindowComponent.cuadroMensaje(
+                        MenuMateria.panelMaterias,
+                        "Has perdido la materia",
+                        "Fin de la línea",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            }
+            panel.setBackground(WindowComponent.FONDO_BOTON); // rojo
+            panel.setTextoColor(Color.WHITE);
+        }
+        else if (notaRestante >= 4.0) // riesgo alto, necesita una nota casi perfecta para aprobar
+        {
+            if (popUps)
+            {
+                String mensaje = String.format(
+                        "Necesitas %.2f en el resto de la materia para aprobar.",
+                        notaRestante
+                );
+                WindowComponent.cuadroMensaje(
+                                                MenuMateria.panelMaterias,
+                                                mensaje,
+                                                "Riesgo alto",
+                                                JOptionPane.WARNING_MESSAGE
+                );
+            }
+            panel.setBackground(Color.decode("#E86100")); // naranja fuerte
+            panel.setTextoColor(Color.WHITE);
+        }
+        else if (notaRestante >= Materia.MINIMO_PUNTAJE) // riesgo medio, necesita una nota promedio para aprobar
+        {
+            if (popUps)
+            {
+                String mensaje = String.format(
+                        "Necesitas %.2f en el resto de la materia para aprobar.",
+                        notaRestante
+                );
+                WindowComponent.cuadroMensaje(
+                        MenuMateria.panelMaterias,
+                        mensaje,
+                        "Riesgo medio",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            }
+            panel.setBackground(Color.decode("#FDFD96")); // amarillo
+            panel.setTextoColor(Color.decode("#000000"));
+        }
+        else
+        {
+            if (popUps) // sin riesgo, necesita muy poquita nota para aprobar
+            {
+                String mensaje = String.format(
+                        "Necesitas %.2f en el resto de la materia para aprobar.",
+                        notaRestante
+                );
+                WindowComponent.cuadroMensaje(
+                        MenuMateria.panelMaterias,
+                        mensaje,
+                        "Sin riesgo",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+            panel.setBackground(WindowComponent.FONDO_GRIS); // gris
+            panel.setTextoColor(Color.WHITE);
+        }
+    }
+
+    public static double calcularNotaRestante(
+            double puntajeActual,
+            double porcentajeEvaluado,
+            double minAprobatorio
+    ) {
+        // 1) Si ya completó el 100%:
+        if (porcentajeEvaluado >= 100.0) {
+            return (puntajeActual >= minAprobatorio) ? 0.0 : Double.POSITIVE_INFINITY;
+        }
+        // 2) Si ya está por encima del mínimo antes de terminar:
+        if (puntajeActual >= minAprobatorio) {
+            return 0.0;
+        }
+        // 3) Cálculo del porcentaje restante
+        double porcentajeRestante = 100.0 - porcentajeEvaluado;
+        // 4) Despejar notaRestante
+        double notaRestante = (minAprobatorio - puntajeActual) * 100.0 / porcentajeRestante;
+        return Math.max(notaRestante, 0.0);
     }
 }

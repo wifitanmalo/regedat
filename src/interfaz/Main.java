@@ -1,6 +1,8 @@
 package interfaz;
 
 // importaciones de swing
+import logica.Reporte;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -10,14 +12,14 @@ public class Main extends JFrame
     public static final int ANCHO_VENTANA=600, ALTURA_VENTANA=400;
 
     // objeto estático del menu principal
-    public static MenuPrincipal principal;
+    public static MenuInicio principal;
 
     // constructor
     public Main()
     {
         iniciarVentana();
         WindowComponent.setContenedor(this.getContentPane());
-        principal = new MenuPrincipal();
+        principal = new MenuInicio();
     }
 
     // metodo para inicializar la ventana principal

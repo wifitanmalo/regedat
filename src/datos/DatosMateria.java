@@ -160,6 +160,7 @@ public class DatosMateria
                 panel.set_score_label(puntajeTotal);
                 panel.set_evaluated_label(porcentajeEvaluado);
 
+                Reporte.evaluarRiesgo(puntajeTotal, porcentajeEvaluado, panel, false);
                 CREDITOS_ACTUALES += creditos;
                 MenuMateria.panelMaterias.add(panel);
             }

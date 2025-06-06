@@ -24,7 +24,7 @@ public class PanelMateria extends JPanel
     private MenuNotas menuNotas;
 
     // paneles de rendimiento
-    private JLabel puntajeTotal, totalEvaluado;
+    private JLabel nombreMateria, puntajeTotal, totalEvaluado;
 
     // constructor
     public PanelMateria(Materia materia)
@@ -41,12 +41,12 @@ public class PanelMateria extends JPanel
         setBackground(WindowComponent.FONDO_GRIS);
         setLayout(null);
 
-        menuNotas = new MenuNotas(materia);
+        menuNotas = new MenuNotas(materia, this);
         menuNotas.setVisible(false);
         WindowComponent.getContenedor().add(menuNotas);
 
         // nombre de la materia
-        JLabel nombreMateria = WindowComponent.setTexto(materia.getId() + " " + materia.getNombre(), 10, 10, 220, 18);
+        nombreMateria = WindowComponent.setTexto(materia.getId() + " " + materia.getNombre(), 10, 10, 220, 18);
         WindowComponent.configurarTexto(nombreMateria, WindowComponent.COLOR_FUENTE, 1, 10);
 
         // texto donde se muestra el puntaje total obtenido
@@ -56,7 +56,7 @@ public class PanelMateria extends JPanel
                                                 350,
                                                 16);
         WindowComponent.configurarTexto(puntajeTotal,
-                                        Color.lightGray,
+                                        WindowComponent.COLOR_FUENTE,
                                         3,
                                         WindowComponent.getAltura(puntajeTotal));
 
@@ -67,7 +67,7 @@ public class PanelMateria extends JPanel
                                                 350,
                                                 16);
         WindowComponent.configurarTexto(totalEvaluado,
-                                        Color.lightGray,
+                                        WindowComponent.COLOR_FUENTE,
                                         3,
                                         WindowComponent.getAltura(totalEvaluado));
 
@@ -136,6 +136,14 @@ public class PanelMateria extends JPanel
 
         // recarga el panel para mostrar los cambios
         WindowComponent.recargar(panelMaterias);
+    }
+
+    // metodo para cambiar el color de los textos del panel
+    public void setTextoColor(Color color)
+    {
+        nombreMateria.setForeground(color);
+        puntajeTotal.setForeground(color);
+        totalEvaluado.setForeground(color);
     }
 
     // setters and getters

@@ -31,10 +31,13 @@ public class MenuNotas extends JPanel
     // panel donde se mostraran las notas
     private final JPanel panelNotas = new JPanel();
 
+    private final PanelMateria panelMateria;
+
     // constructor
-    public MenuNotas(Materia materia)
+    public MenuNotas(Materia materia, PanelMateria panelMateria)
     {
         this.materia = materia;
+        this.panelMateria = panelMateria;
         inicializarPanel();
     }
 
@@ -136,6 +139,11 @@ public class MenuNotas extends JPanel
                                         Reporte.materiaDAO.actualizarMateria(materia.getIdInscripcion(), panelNotas);
                                         // actualiza el texto del puntaje total
                                         setTextoPuntaje(Reporte.materiaDAO.getPuntajeTotal(materia.getIdInscripcion(), panelNotas));
+                                        // avisa que tal va el rendimiento de la mataeria
+                                        Reporte.evaluarRiesgo(Reporte.materiaDAO.getPuntajeTotal(materia.getIdInscripcion(), panelNotas),
+                                                                Reporte.materiaDAO.getPorcentajeTotal(materia.getIdInscripcion(), panelNotas),
+                                                                panelMateria,
+                                                                true);
                                     },
                                     WindowComponent.FONDO_GRIS,
                                     Color.decode("#91BAD6"),
