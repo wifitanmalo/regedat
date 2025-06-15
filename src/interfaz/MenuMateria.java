@@ -20,7 +20,7 @@ import javax.swing.SwingUtilities;
 
 // improtaciones de los paquetes
 import datos.DatosMateria;
-import logica.Reporte;
+import logica.Sistema;
 
 public class MenuMateria extends JPanel
 {
@@ -28,7 +28,7 @@ public class MenuMateria extends JPanel
     private final Container container;
 
     // panel donde seran mostradas las materias
-    public static final JPanel panelMaterias = new JPanel();
+    public static final JPanel PANEL_MATERIAS = new JPanel();
 
     // objeto del menu del listado de materias
     private MenuListado menuListado;
@@ -54,7 +54,7 @@ public class MenuMateria extends JPanel
         container.add(menuListado);
 
         // agrega una barra de desplazamiento vertical al listado de materias
-        JScrollPane barraScroll = WindowComponent.setScrollbar(panelMaterias,
+        JScrollPane barraScroll = WindowComponent.setScrollbar(PANEL_MATERIAS,
                                                                 104,
                                                                 60,
                                                                 380,
@@ -86,7 +86,7 @@ public class MenuMateria extends JPanel
                                     () ->
                                     {
                                         // abre el cuadro de dialogo
-                                        cuadroCodigo(panelMaterias);
+                                        cuadroCodigo(PANEL_MATERIAS);
                                     },
                                     WindowComponent.FONDO_BOTON,
                                     WindowComponent.FONDO_SOBRE_BOTON,
@@ -106,7 +106,7 @@ public class MenuMateria extends JPanel
         WindowComponent.eventoBoton(botonCerrar,
                                     () ->
                                     {
-                                        int choice = JOptionPane.showConfirmDialog(panelMaterias,
+                                        int choice = JOptionPane.showConfirmDialog(PANEL_MATERIAS,
                                                                                 "¿Quieres cerrar la sesión?",
                                                                                 "Cerrar sesión",
                                                                                 JOptionPane.YES_NO_OPTION);
@@ -121,29 +121,9 @@ public class MenuMateria extends JPanel
                                     Color.decode("#C7C8CA"));
 
         // agrega el boton para cerrar sesion
-        JButton botonReporte = WindowComponent.setBoton("Reporte",
+        JButton botonListado = WindowComponent.setBoton("Listado",
                                                         Main.ANCHO_VENTANA-104,
                                                         botonAgregar.getY(),
-                                                        78,
-                                                        50,
-                                                        WindowComponent.FONDO_GRIS);
-        WindowComponent.configurarTexto(botonReporte,
-                                        WindowComponent.COLOR_FUENTE,
-                                        1,
-                                        10);
-        WindowComponent.eventoBoton(botonReporte,
-                                    () ->
-                                    {
-                                        System.out.println("mostrar reporte de materias");
-                                    },
-                                    WindowComponent.FONDO_GRIS,
-                                    Color.decode("#91BAD6"),
-                                    Color.decode("#528AAE"));
-
-        // agrega el boton para cerrar sesion
-        JButton botonListado = WindowComponent.setBoton("Listado",
-                                                        botonReporte.getX(),
-                                                        WindowComponent.yNegativo(botonReporte, 20),
                                                         78,
                                                         50,
                                                         WindowComponent.FONDO_GRIS);
@@ -164,7 +144,6 @@ public class MenuMateria extends JPanel
         // agrega los componentes al panel
         add(botonAgregar);
         add(botonCerrar);
-        add(botonReporte);
         add(botonListado);
         add(tituloMaterias);
         add(barraScroll);
@@ -193,9 +172,9 @@ public class MenuMateria extends JPanel
                 if (DatosMateria.materiaExiste(codigoMateria, this))
                 {
                     // inserta la inscripción en la base de datos
-                    Reporte.materiaDAO.inscribirMateria(codigoMateria,this);
+                    Sistema.materiaDAO.inscribirMateria(codigoMateria,this);
                     // recarga las materias para mostrar los cambios
-                    Reporte.materiaDAO.cargarMaterias(this, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
+                    Sistema.materiaDAO.cargarMaterias(this, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
                     // cierra el cuadro de dialogo
                     dialogo.dispose();
                 }

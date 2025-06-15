@@ -19,6 +19,8 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+// importaciones de util
+
 // importaciones de los paquetes
 import interfaz.MenuMateria;
 import interfaz.PanelMateria;
@@ -27,7 +29,7 @@ import datos.DatosEstudiante;
 import datos.DatosMateria;
 import datos.DatosNota;
 
-public class Reporte
+public class Sistema
 {
     // objetos para manejar los datos de la base de datos
     public static DatosEstudiante estudianteDAO;
@@ -35,7 +37,7 @@ public class Reporte
     public static DatosNota notaDAO;
 
     // constructor
-    public Reporte()
+    public Sistema()
     {
         this.estudianteDAO = new DatosEstudiante();
         this.materiaDAO = new DatosMateria();
@@ -53,6 +55,32 @@ public class Reporte
             sb.append(String.format("%02x", b));
         }
         return sb.toString();
+    }
+
+    // metodo para comprobar si una clave es lo suficientemente segura
+    public static boolean validarClave(String clave)
+    {
+        boolean tieneMayuscula = clave.matches(".*[A-Z].*");
+        boolean tieneMinuscula = clave.matches(".*[a-z].*");
+        boolean tieneNumero = clave.matches(".*[0-9].*");
+        boolean tieneSimbolo = clave.matches(".*[^a-zA-Z0-9].*");
+        return tieneMayuscula && tieneMinuscula && tieneNumero && tieneSimbolo;
+    }
+
+    // metodo para comparar dos claves y verificar si son iguales
+    public static boolean compararClaves(String clave1, String clave2)
+    {
+        try
+        {
+            String hash1 = hashSHA256(clave1);
+            String hash2 = hashSHA256(clave2);
+            return hash1.equals(hash2);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     // metodo para validar la conexion de la base de datos
@@ -109,7 +137,7 @@ public class Reporte
         {
             if (popUps) {
                 WindowComponent.cuadroMensaje(
-                        MenuMateria.panelMaterias,
+                        MenuMateria.PANEL_MATERIAS,
                         "¡Has aprobado la materia!",
                         "¡Felicitaciones!",
                         JOptionPane.INFORMATION_MESSAGE
@@ -129,7 +157,7 @@ public class Reporte
             if (popUps)
             {
                 WindowComponent.cuadroMensaje(
-                        MenuMateria.panelMaterias,
+                        MenuMateria.PANEL_MATERIAS,
                         "Has perdido la materia",
                         "Fin de la línea",
                         JOptionPane.WARNING_MESSAGE
@@ -138,7 +166,7 @@ public class Reporte
             panel.setBackground(Color.decode("#FF746C")); // panel rojo pastel
             panel.setTextoColor(Color.decode("#BA2820")); // texto rojo
         }
-        else if (notaRestante >= (Materia.MAXIMO_PUNTAJE*(90/100)) ) // riesgo alto, necesita una nota casi perfecta para aprobar
+        else if (notaRestante >= (Materia.MAXIMO_PUNTAJE*(0.85)) ) // riesgo alto, necesita una nota casi perfecta para aprobar
         {
             if (popUps)
             {
@@ -147,7 +175,7 @@ public class Reporte
                         notaRestante
                 );
                 WindowComponent.cuadroMensaje(
-                                                MenuMateria.panelMaterias,
+                                                MenuMateria.PANEL_MATERIAS,
                                                 mensaje,
                                                 "Riesgo alto",
                                                 JOptionPane.WARNING_MESSAGE
@@ -165,7 +193,7 @@ public class Reporte
                         notaRestante
                 );
                 WindowComponent.cuadroMensaje(
-                        MenuMateria.panelMaterias,
+                        MenuMateria.PANEL_MATERIAS,
                         mensaje,
                         "Riesgo medio",
                         JOptionPane.WARNING_MESSAGE
@@ -183,7 +211,7 @@ public class Reporte
                         notaRestante
                 );
                 WindowComponent.cuadroMensaje(
-                        MenuMateria.panelMaterias,
+                        MenuMateria.PANEL_MATERIAS,
                         mensaje,
                         "Sin riesgo",
                         JOptionPane.INFORMATION_MESSAGE

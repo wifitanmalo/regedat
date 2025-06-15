@@ -12,7 +12,7 @@ import javax.swing.*;
 // importaciones de los paquetes
 import logica.Materia;
 import logica.Nota;
-import logica.Reporte;
+import logica.Sistema;
 
 public class PanelNota extends JPanel
 {
@@ -80,15 +80,15 @@ public class PanelNota extends JPanel
                     else
                     {
                         // actualiza el puntaje de la nota en la base de datos
-                        Reporte.notaDAO.actualizarPuntaje(nota, nuevoPuntaje, panelNotas);
+                        Sistema.notaDAO.actualizarPuntaje(nota, nuevoPuntaje, panelNotas);
                     }
                 }
                 catch (NumberFormatException ex)
                 {
                     // cambia el puntaje fallido al valor predeterminado
-                    Reporte.notaDAO.actualizarPuntaje(nota, 0.0, panelNotas);
+                    Sistema.notaDAO.actualizarPuntaje(nota, 0.0, panelNotas);
                     // recarga el panel para mostrar los cambios
-                    Reporte.notaDAO.cargarNotas(materia, panelNotas);
+                    Sistema.notaDAO.cargarNotas(materia, panelNotas);
                 }
                 super.keyReleased(e);
             }
@@ -141,15 +141,15 @@ public class PanelNota extends JPanel
                     else
                     {
                         // actualiza el porcentaje de la nota en la base de datos
-                        Reporte.notaDAO.actualizarPorcentaje(nota, nuevoPorcentaje, panelNotas);
+                        Sistema.notaDAO.actualizarPorcentaje(nota, nuevoPorcentaje, panelNotas);
                     }
                 }
                 catch (NumberFormatException ex)
                 {
                     // cambia el porcentaje fallido al valor predeterminado
-                    Reporte.notaDAO.actualizarPorcentaje(nota, 0.0, panelNotas);
+                    Sistema.notaDAO.actualizarPorcentaje(nota, 0.0, panelNotas);
                     // recarga el panel para mostrar los cambios
-                    Reporte.notaDAO.cargarNotas(materia, panelNotas);
+                    Sistema.notaDAO.cargarNotas(materia, panelNotas);
                 }
                 super.keyReleased(e);
             }
@@ -181,9 +181,9 @@ public class PanelNota extends JPanel
                 () ->
                 {
                     // elimina la nota de la base de datos
-                    Reporte.notaDAO.eliminarNota(nota, panelNotas);
+                    Sistema.notaDAO.eliminarNota(nota, panelNotas);
                     // recarga las notas para mostrar los cambios
-                    Reporte.notaDAO.cargarNotas(materia, panelNotas);
+                    Sistema.notaDAO.cargarNotas(materia, panelNotas);
                 },
                 Color.decode("#4D5156"),
                 Color.decode("#FF4F4B"),

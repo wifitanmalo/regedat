@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 // importaciones de los paquetes
 import logica.Materia;
-import logica.Reporte;
+import logica.Sistema;
 
 public class PanelMateria extends JPanel
 {
@@ -33,7 +33,7 @@ public class PanelMateria extends JPanel
     public PanelMateria(Materia materia)
     {
         this.materia = materia;
-        this.panelMaterias = MenuMateria.panelMaterias;
+        this.panelMaterias = MenuMateria.PANEL_MATERIAS;
         inicializarPanel();
     }
 
@@ -126,9 +126,9 @@ public class PanelMateria extends JPanel
                 () ->
                 {
                     // carga las notas de la materia
-                    Reporte.notaDAO.cargarNotas(materia, menuNotas.getPanelNotas());
+                    Sistema.notaDAO.cargarNotas(materia, menuNotas.getPanelNotas());
                     menuNotas.setTextoPuntaje(this.materia.getPuntajeTotal());
-                    WindowComponent.cambiarPanel(MenuInicio.menuMateria, menuNotas);
+                    WindowComponent.cambiarPanel(MenuInicio.MENU_MATERIA, menuNotas);
                 },
                 color,
                 Color.decode("#C5EF48"),
@@ -143,11 +143,11 @@ public class PanelMateria extends JPanel
                     if(choice == JOptionPane.YES_OPTION)
                     {
                         // elimina la inscripcion de la materia en la base de datos
-                        Reporte.materiaDAO.eliminarMateria(this.materia.getId(), panelMaterias);
+                        Sistema.materiaDAO.eliminarMateria(this.materia.getIdInscripcion(), panelMaterias);
                         // elimina todas las notas vinculadas a la materia
-                        Reporte.notaDAO.eliminarTodo(this.materia.getIdInscripcion(), panelMaterias);
+                        Sistema.notaDAO.eliminarTodo(this.materia.getIdInscripcion(), panelMaterias);
                         // recarga el panel para mostrar los cambios
-                        Reporte.materiaDAO.cargarMaterias(panelMaterias, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
+                        Sistema.materiaDAO.cargarMaterias(panelMaterias, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
                     }
                 },
                 color,

@@ -4,10 +4,6 @@ package interfaz;
 import java.awt.*;
 
 // importaciones de SQL
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 // importaciones de swing
 import javax.swing.*;
@@ -15,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 // importaciones de los paquetes
 import logica.Carrera;
-import logica.Reporte;
+import logica.Sistema;
 
 public class MenuListado extends JPanel
 {
@@ -40,13 +36,13 @@ public class MenuListado extends JPanel
         // ---------- JComboBox de carreras ----------
         listadoCarreras = new JComboBox<>();
         listadoCarreras.setBounds(124, 20, 340, 30);
-        Reporte.materiaDAO.cargarCarreras(listadoCarreras, OPCION_TODAS, this);
+        Sistema.materiaDAO.cargarCarreras(listadoCarreras, OPCION_TODAS, this);
 
         listadoCarreras.addActionListener(e ->
         {
             Carrera seleccionado = (Carrera) listadoCarreras.getSelectedItem();
             if (seleccionado != null) {
-                Reporte.materiaDAO.listarMaterias(seleccionado.getId(), modeloTabla, this);
+                Sistema.materiaDAO.listarMaterias(seleccionado.getId(), modeloTabla, this);
             }
         });
         WindowComponent.configurarTexto(listadoCarreras, Color.decode("#363636"), 1, 14);
@@ -99,8 +95,8 @@ public class MenuListado extends JPanel
         WindowComponent.eventoBoton(botonVolver,
                 () ->
                 {
-                    Reporte.materiaDAO.cargarMaterias(this, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
-                    WindowComponent.cambiarPanel(this, MenuInicio.menuMateria);
+                    Sistema.materiaDAO.cargarMaterias(this, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
+                    WindowComponent.cambiarPanel(this, MenuInicio.MENU_MATERIA);
                 },
                 WindowComponent.FONDO_GRIS,
                 Color.decode("#AAAAAA"),

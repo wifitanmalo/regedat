@@ -19,7 +19,7 @@ public class WindowComponent
     public static final Color FONDO_GRIS = Color.decode("#757575");
 
     // objeto del contenedor
-    public static Container current_container;
+    public static Container contenedorActual;
 
     // metodo para añadir un panel
     public static JPanel setPanel(Color color,
@@ -210,11 +210,11 @@ public class WindowComponent
     // setters and getters
     public static void setContenedor(Container contenedor)
     {
-        current_container = contenedor;
+        contenedorActual = contenedor;
     }
     public static Container getContenedor()
     {
-        return current_container;
+        return contenedorActual;
     }
 
     // metodo para obtener el largo/altura de un contenedor

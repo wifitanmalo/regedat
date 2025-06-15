@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 
 // importaciones de los paquetes
 import logica.Estudiante;
-import logica.Reporte;
+import logica.Sistema;
 
 public class MenuInicio extends JPanel
 {
@@ -30,16 +30,26 @@ public class MenuInicio extends JPanel
     // objeto del contenedor
     private final Container contenedor;
 
+    // objeto del menu recuperar clave
+    private final RecuperarClave menuRecuperar;
+
     // objeto del menu de las materias
-    public static MenuMateria menuMateria;
+    public static MenuMateria MENU_MATERIA;
+
+    // objeto del reporte
+    public static Sistema sistema;
 
     // constructor
     public MenuInicio()
     {
-        this.menuMateria = new MenuMateria();
-        menuMateria.setVisible(false);
+        this.sistema = new Sistema();
+        this.MENU_MATERIA = new MenuMateria();
+        MENU_MATERIA.setVisible(false);
+        this.menuRecuperar = new RecuperarClave();
+        menuRecuperar.setVisible(false);
         this.contenedor = WindowComponent.getContenedor();
-        contenedor.add(menuMateria);
+        contenedor.add(MENU_MATERIA);
+        contenedor.add(menuRecuperar);
         iniciarPanel();
     }
 
@@ -80,16 +90,16 @@ public class MenuInicio extends JPanel
                                     () ->
                                     {
                                         // valida si la información del usuario es correcta
-                                        if (Reporte.loginEstudiante(this,
+                                        if (Sistema.loginEstudiante(this,
                                                                     campoCodigo,
                                                                     campoClave))
                                         {
                                             // asigna el estudiante actual a la variable estática
-                                            ESTUDIANTE_ACTUAL = Reporte.estudianteDAO.obtenerEstudiante(Integer.parseInt(campoCodigo.getText().trim()));
+                                            ESTUDIANTE_ACTUAL = Sistema.estudianteDAO.obtenerEstudiante(Integer.parseInt(campoCodigo.getText().trim()));
                                             // carga las materias del estudiante desde la base de datos
-                                            Reporte.materiaDAO.cargarMaterias(this, ESTUDIANTE_ACTUAL.getCodigo());
+                                            Sistema.materiaDAO.cargarMaterias(this, ESTUDIANTE_ACTUAL.getCodigo());
                                             // entra al menu de las materias
-                                            WindowComponent.cambiarPanel(this, menuMateria);
+                                            WindowComponent.cambiarPanel(this, MENU_MATERIA);
                                             // limpia los campos de texto
                                             limpiarTodo();
                                         }
@@ -101,6 +111,26 @@ public class MenuInicio extends JPanel
                                                                         JOptionPane.ERROR_MESSAGE);
                                             limpiarTodo();
                                         }
+                                    },
+                                    WindowComponent.FONDO_BOTON,
+                                    WindowComponent.FONDO_SOBRE_BOTON,
+                                    WindowComponent.FONDO_PRESIONAR_BOTON);
+        // agrega el boton de confirmacion
+        JButton botonRecuperar = WindowComponent.setBoton("Recuperar",
+                                                            botonEntrar.getX(),
+                                                            WindowComponent.yNegativo(botonEntrar, 10),
+                                                            78,
+                                                            50,
+                                                            WindowComponent.FONDO_BOTON);
+        WindowComponent.configurarTexto(botonRecuperar,
+                                        WindowComponent.COLOR_FUENTE,
+                                        1,
+                                        10);
+        WindowComponent.eventoBoton(botonRecuperar,
+                                    () ->
+                                    {
+                                        // entra al menu de recuperar clave
+                                        WindowComponent.cambiarPanel(this, menuRecuperar);
                                     },
                                     WindowComponent.FONDO_BOTON,
                                     WindowComponent.FONDO_SOBRE_BOTON,
@@ -153,6 +183,7 @@ public class MenuInicio extends JPanel
         add(panelCampos);
         add(logo);
         add(botonEntrar);
+        add(botonRecuperar);
 
         // agrega los componentes al panel
         panelCampos.add(tituloCorreo);

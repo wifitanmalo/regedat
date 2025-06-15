@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 // package imports
 import interfaz.PanelNota;
 import interfaz.WindowComponent;
-import logica.Reporte;
+import logica.Sistema;
 import logica.Materia;
 import logica.Nota;
 
@@ -32,10 +32,10 @@ public class DatosNota
     public void cargarNotas(Materia materia, JPanel panelNotas)
     {
         String consulta = "SELECT * FROM Nota WHERE idInscripcion = ?";
-        try (Connection conectado = Reporte.conectarDB();
+        try (Connection conectado = Sistema.conectarDB();
              PreparedStatement estado = conectado.prepareStatement(consulta))
         {
-            estado.setInt(1, Reporte.materiaDAO.obtenerIdInscripcion(materia.getId()));
+            estado.setInt(1, Sistema.materiaDAO.obtenerIdInscripcion(materia.getId()));
             ResultSet notaActual = estado.executeQuery();
             // limpia el panel de las notas
             panelNotas.removeAll();
@@ -72,7 +72,7 @@ public class DatosNota
     public void crearNota(int idInscripcion, String nombre, Container container)
     {
         String consulta = "INSERT INTO Nota(idInscripcion, nombre) VALUES(?, ?)";
-        try (Connection conectar = Reporte.conectarDB();
+        try (Connection conectar = Sistema.conectarDB();
              PreparedStatement crear = conectar.prepareStatement(consulta))
         {
             crear.setInt(1, idInscripcion);
@@ -93,7 +93,7 @@ public class DatosNota
     public void eliminarNota(Nota nota, Container contenedor)
     {
         String query = "DELETE FROM Nota WHERE id = ? AND idInscripcion = ?";
-        try (Connection conectado = Reporte.conectarDB();
+        try (Connection conectado = Sistema.conectarDB();
              PreparedStatement eliminar = conectado.prepareStatement(query))
         {
             eliminar.setInt(1, nota.getId());
@@ -114,7 +114,7 @@ public class DatosNota
     public void eliminarTodo(int idInscripcion, Container contenedor)
     {
         String query = "DELETE FROM Nota WHERE idInscripcion = ?";
-        try (Connection conectado = Reporte.conectarDB();
+        try (Connection conectado = Sistema.conectarDB();
              PreparedStatement eliminar = conectado.prepareStatement(query))
         {
             eliminar.setInt(1, idInscripcion);
@@ -134,7 +134,7 @@ public class DatosNota
     public void actualizarPuntaje(Nota nota, double newScore, Container container)
     {
         String consulta = "UPDATE Nota SET valor = ? WHERE id = ? AND idInscripcion = ?";
-        try (Connection conectar = Reporte.conectarDB();
+        try (Connection conectar = Sistema.conectarDB();
              PreparedStatement actualizar = conectar.prepareStatement(consulta))
         {
             // atributos de la nota
@@ -158,7 +158,7 @@ public class DatosNota
     public void actualizarPorcentaje(Nota nota, double nuevoPorcentaje, Container contenedor)
     {
         String consulta = "UPDATE Nota SET porcentaje = ? WHERE id = ? AND idInscripcion = ?";
-        try (Connection conectar = Reporte.conectarDB();
+        try (Connection conectar = Sistema.conectarDB();
              PreparedStatement actualizar = conectar.prepareStatement(consulta))
         {
             // atributos de la nota

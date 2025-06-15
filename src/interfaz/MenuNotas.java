@@ -18,7 +18,7 @@ import javax.swing.SwingUtilities;
 
 // importaciones de los paquetes
 import logica.Materia;
-import logica.Reporte;
+import logica.Sistema;
 
 public class MenuNotas extends JPanel
 {
@@ -102,9 +102,9 @@ public class MenuNotas extends JPanel
                                     () ->
                                     {
                                         // carga las materias desde la base de datos
-                                        Reporte.materiaDAO.cargarMaterias(this, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
+                                        Sistema.materiaDAO.cargarMaterias(this, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
                                         // cambia el panel al menu de las materias
-                                        WindowComponent.cambiarPanel(this, MenuInicio.menuMateria);
+                                        WindowComponent.cambiarPanel(this, MenuInicio.MENU_MATERIA);
                                     },
                                     WindowComponent.FONDO_GRIS,
                                     Color.decode("#AAAAAA"),
@@ -136,12 +136,12 @@ public class MenuNotas extends JPanel
                                     () ->
                                     {
                                         // realiza los calculos para actualizar los valores de la materia
-                                        Reporte.materiaDAO.actualizarMateria(materia.getIdInscripcion(), panelNotas);
+                                        Sistema.materiaDAO.actualizarMateria(materia.getIdInscripcion(), panelNotas);
                                         // actualiza el texto del puntaje total
-                                        setTextoPuntaje(Reporte.materiaDAO.getPuntajeTotal(materia.getIdInscripcion(), panelNotas));
+                                        setTextoPuntaje(Sistema.materiaDAO.getPuntajeTotal(materia.getIdInscripcion(), panelNotas));
                                         // avisa que tal va el rendimiento de la mataeria
-                                        Reporte.evaluarRiesgo(Reporte.materiaDAO.getPuntajeTotal(materia.getIdInscripcion(), panelNotas),
-                                                                Reporte.materiaDAO.getPorcentajeTotal(materia.getIdInscripcion(), panelNotas),
+                                        Sistema.evaluarRiesgo(Sistema.materiaDAO.getPuntajeTotal(materia.getIdInscripcion(), panelNotas),
+                                                                Sistema.materiaDAO.getPorcentajeTotal(materia.getIdInscripcion(), panelNotas),
                                                                 panelMateria,
                                                                 true);
                                     },
@@ -173,9 +173,9 @@ public class MenuNotas extends JPanel
         botonCrear.addActionListener(e -> {
             String nombreNota = campoTexto.getText();
             // crea la nota en la base de datos
-            Reporte.notaDAO.crearNota(Reporte.materiaDAO.obtenerIdInscripcion(materiaActual.getId()), nombreNota, panelNotas);
+            Sistema.notaDAO.crearNota(Sistema.materiaDAO.obtenerIdInscripcion(materiaActual.getId()), nombreNota, panelNotas);
             // carga las notas nuevamente para mostrar los cambios
-            Reporte.notaDAO.cargarNotas(materiaActual, panelNotas);
+            Sistema.notaDAO.cargarNotas(materiaActual, panelNotas);
             // cierra el cuadro de dialogo
             dialogo.dispose();
         });

@@ -17,7 +17,7 @@ import interfaz.MenuInicio;
 import interfaz.MenuMateria;
 import logica.Carrera;
 import logica.Materia;
-import logica.Reporte;
+import logica.Sistema;
 import interfaz.PanelMateria;
 import interfaz.WindowComponent;
 
@@ -36,7 +36,7 @@ public class DatosMateria
     public Integer obtenerIdInscripcion(int idMateria)
     {
         String consulta = "SELECT id FROM Inscripcion WHERE idEstudiante = ? AND idMateria = ?";
-        try (Connection conectar = Reporte.conectarDB();
+        try (Connection conectar = Sistema.conectarDB();
              PreparedStatement inscripcion = conectar.prepareStatement(consulta))
         {
             inscripcion.setInt(1, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
@@ -55,7 +55,7 @@ public class DatosMateria
     public double getPuntajeTotal(int idInscripcion, Container container)
     {
         String consulta = "SELECT COALESCE(SUM(valor * (porcentaje / 100.0)), 0) FROM Nota WHERE idInscripcion = ?";
-        try (Connection conectar = Reporte.conectarDB();
+        try (Connection conectar = Sistema.conectarDB();
              PreparedStatement estado = conectar.prepareStatement(consulta))
         {
             estado.setInt(1, idInscripcion);
@@ -81,7 +81,7 @@ public class DatosMateria
     public double getPorcentajeTotal(int idInscripcion, Container container)
     {
         String consulta = "SELECT COALESCE(SUM(porcentaje), 0) FROM Nota WHERE idInscripcion = ?";
-        try (Connection conectar = Reporte.conectarDB();
+        try (Connection conectar = Sistema.conectarDB();
              PreparedStatement estado = conectar.prepareStatement(consulta))
         {
             estado.setInt(1, idInscripcion);
@@ -107,7 +107,7 @@ public class DatosMateria
     {
         // consulta de la materia
         String query = "SELECT 1 FROM Materia WHERE id = ?";
-        try (Connection conectar = Reporte.conectarDB();
+        try (Connection conectar = Sistema.conectarDB();
              PreparedStatement materia = conectar.prepareStatement(query))
         {
             materia.setInt(1, idInscripcion);
@@ -136,14 +136,14 @@ public class DatosMateria
         WHERE i.idEstudiante = ?;
         """;
 
-        try (Connection isConnected = Reporte.conectarDB();
+        try (Connection isConnected = Sistema.conectarDB();
              PreparedStatement statement = isConnected.prepareStatement(query))
         {
             statement.setInt(1, idEstudiante);
             ResultSet result = statement.executeQuery();
 
             CREDITOS_ACTUALES = 0;
-            MenuMateria.panelMaterias.removeAll();
+            MenuMateria.PANEL_MATERIAS.removeAll();
 
             while (result.next())
             {
@@ -162,12 +162,12 @@ public class DatosMateria
                 panel.set_score_label(puntajeTotal);
                 panel.set_evaluated_label(porcentajeEvaluado);
 
-                Reporte.evaluarRiesgo(puntajeTotal, porcentajeEvaluado, panel, false);
+                Sistema.evaluarRiesgo(puntajeTotal, porcentajeEvaluado, panel, false);
                 CREDITOS_ACTUALES += creditos;
-                MenuMateria.panelMaterias.add(panel);
+                MenuMateria.PANEL_MATERIAS.add(panel);
             }
             // recarga el panel para mostrar los cambios
-            WindowComponent.recargar(MenuMateria.panelMaterias);
+            WindowComponent.recargar(MenuMateria.PANEL_MATERIAS);
         }
         catch (SQLException e)
         {
@@ -186,7 +186,7 @@ public class DatosMateria
         String buscar = "SELECT 1 FROM Inscripcion WHERE idEstudiante = ? AND idInscripcion = ?";
         String insertar = "INSERT INTO Inscripcion (idEstudiante, idInscripcion) VALUES (?, ?)";
 
-        try (Connection conectar = Reporte.conectarDB();
+        try (Connection conectar = Sistema.conectarDB();
              PreparedStatement inscripcion = conectar.prepareStatement(buscar))
         {
             // llaves foraneas de la inscripcion
@@ -231,8 +231,8 @@ public class DatosMateria
     public void eliminarMateria(int idInscripcion, Container contenedor)
     {
         // consulta de eliminación
-        String query = "DELETE FROM Inscripcion WHERE idEstudiante = ? AND idInscripcion = ?";
-        try (Connection conectar = Reporte.conectarDB();
+        String query = "DELETE FROM Inscripcion WHERE idEstudiante = ? AND id = ?";
+        try (Connection conectar = Sistema.conectarDB();
              PreparedStatement eliminar = conectar.prepareStatement(query))
         {
             // llaveas foraneas de la inscripcion
@@ -263,7 +263,7 @@ public class DatosMateria
             WHERE id = ?
         """;
 
-        try (Connection conectar = Reporte.conectarDB();
+        try (Connection conectar = Sistema.conectarDB();
              PreparedStatement actualizar = conectar.prepareStatement(consulta))
         {
             // se verifica que la suma de los porcentajes no sea mayor que 100
@@ -303,7 +303,7 @@ public class DatosMateria
         listadoCarreras.addItem(opcionTodas);
 
         String consulta = "SELECT id, nombre FROM Carrera ORDER BY nombre";
-        try (Connection conectar = Reporte.conectarDB();
+        try (Connection conectar = Sistema.conectarDB();
              PreparedStatement estado = conectar.prepareStatement(consulta);
              ResultSet carrera = estado.executeQuery())
         {
@@ -336,7 +336,7 @@ public class DatosMateria
                 "WHERE cm.idCarrera = ? " +
                 "ORDER BY m.nombre";
 
-        try (Connection conectar = Reporte.conectarDB();
+        try (Connection conectar = Sistema.conectarDB();
              PreparedStatement listado = idCarrera < 0
                      ? conectar.prepareStatement(consultaTodas)
                      : conectar.prepareStatement(consultaPorCarrera))
