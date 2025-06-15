@@ -113,7 +113,7 @@ public class MenuMateria extends JPanel
                                         if(choice == JOptionPane.YES_OPTION)
                                         {
                                             // cierra la sesion y regresa al menu principal
-                                            WindowComponent.cambiarPanel(this, Main.principal);
+                                            WindowComponent.cambiarPanel(this, Main.MENU_PRINCIPAL);
                                         }
                                     },
                                     WindowComponent.FONDO_GRIS,

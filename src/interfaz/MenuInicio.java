@@ -1,10 +1,18 @@
 package interfaz;
 
 // importaciones de awt
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Image;
 
 // importaciones de swing
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 // importaciones de los paquetes
 import logica.Estudiante;
@@ -25,13 +33,9 @@ public class MenuInicio extends JPanel
     // objeto del menu de las materias
     public static MenuMateria menuMateria;
 
-    // objeto del reporte
-    public static Reporte reporte;
-
     // constructor
     public MenuInicio()
     {
-        this.reporte = new Reporte();
         this.menuMateria = new MenuMateria();
         menuMateria.setVisible(false);
         this.contenedor = WindowComponent.getContenedor();
@@ -45,26 +49,6 @@ public class MenuInicio extends JPanel
         setLayout(null);
         setBackground(WindowComponent.FONDO_VENTANA);
         setBounds(0, 0, Main.ANCHO_VENTANA, Main.ALTURA_VENTANA);
-
-        // agrega el boton para mostrar la informacion del sistema
-        JButton botonInformacion = WindowComponent.setBoton("i",
-                Main.ANCHO_VENTANA -80,
-                20,
-                50,
-                50,
-                WindowComponent.FONDO_GRIS);
-        WindowComponent.configurarTexto(botonInformacion,
-                WindowComponent.COLOR_FUENTE,
-                1,
-                20);
-        WindowComponent.eventoBoton(botonInformacion,
-                () ->
-                {
-                    System.out.println("mostrar informacion");
-                },
-                WindowComponent.FONDO_GRIS,
-                Color.decode("#91BAD6"),
-                Color.decode("#528AAE"));
 
         // agrega un panel con los campos de texto
         JPanel panelCampos = WindowComponent.setPanel(WindowComponent.FONDO_BOTON,
@@ -115,6 +99,7 @@ public class MenuInicio extends JPanel
                                                                         "ID/Contraseña incorrecta.",
                                                                         "Error de autenticación",
                                                                         JOptionPane.ERROR_MESSAGE);
+                                            limpiarTodo();
                                         }
                                     },
                                     WindowComponent.FONDO_BOTON,
@@ -165,7 +150,6 @@ public class MenuInicio extends JPanel
                                         18);
 
         // agrega los componentes al contenedor
-        add(botonInformacion);
         add(panelCampos);
         add(logo);
         add(botonEntrar);

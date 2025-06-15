@@ -29,7 +29,7 @@ public class PanelNota extends JPanel
     private JTextField campoPuntaje, campoPorcentaje;
 
     // constructor
-    public PanelNota(int idInscripcion, Materia materia, Nota nota, JPanel panelNotas)
+    public PanelNota(Materia materia, Nota nota, JPanel panelNotas)
     {
         this.materia = materia;
         this.nota = nota;

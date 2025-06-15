@@ -85,28 +85,6 @@ public class PanelMateria extends JPanel
                                         WindowComponent.COLOR_FUENTE,
                                         1,
                                         18);
-        /*
-        WindowComponent.eventoBoton(botonEliminar,
-
-                                    () ->
-                                    {
-                                        int choice = JOptionPane.showConfirmDialog(panelMaterias,
-                                                                                "¿Quieres eliminar esta materia?",
-                                                                                "Eliminar materia",
-                                                                                JOptionPane.YES_NO_OPTION);
-                                        if(choice == JOptionPane.YES_OPTION)
-                                        {
-                                            // elimina la inscripcion de la materia en la base de datos
-                                            Reporte.materiaDAO.eliminarMateria(this.materia.getId(), panelMaterias);
-                                            // recarga el panel para mostrar los cambios
-                                            Reporte.materiaDAO.cargarMaterias(panelMaterias, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
-                                        }
-                                    },
-                                    Color.decode("#808080"),
-                                    Color.decode("#FF4F4B"),
-                                    Color.decode("#FF1D18"));
-
-         */
 
         // boton para entrar al menu de las notas
         botonNota = WindowComponent.setBoton("+",
@@ -119,20 +97,6 @@ public class PanelMateria extends JPanel
                                         WindowComponent.COLOR_FUENTE,
                                         1,
                                         18);
-        /*
-        WindowComponent.eventoBoton(botonNota,
-                                    () ->
-                                    {
-                                        // carga las notas de la materia
-                                        Reporte.notaDAO.cargarNotas(materia, menuNotas.getPanelNotas());
-                                        menuNotas.setTextoPuntaje(this.materia.getPuntajeTotal());
-                                        WindowComponent.cambiarPanel(MenuInicio.menuMateria, menuNotas);
-                                    },
-                                    Color.decode("#808080"),
-                                    Color.decode("#C5EF48"),
-                                    Color.decode("#9DD100"));
-
-         */
 
         // agrega los componentes al panel
         add(nombreMateria);
@@ -180,6 +144,8 @@ public class PanelMateria extends JPanel
                     {
                         // elimina la inscripcion de la materia en la base de datos
                         Reporte.materiaDAO.eliminarMateria(this.materia.getId(), panelMaterias);
+                        // elimina todas las notas vinculadas a la materia
+                        Reporte.notaDAO.eliminarTodo(this.materia.getIdInscripcion(), panelMaterias);
                         // recarga el panel para mostrar los cambios
                         Reporte.materiaDAO.cargarMaterias(panelMaterias, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
                     }

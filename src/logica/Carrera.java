@@ -3,7 +3,7 @@ package logica;
 public class Carrera
 {
     // atributos
-    private final int id;
+    private int id;
     private final String nombre;
 
     // constructor
@@ -14,7 +14,12 @@ public class Carrera
     }
 
     // setters and getters
-    public int getId() {
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+    public int getId()
+    {
         return id;
     }
 

@@ -51,7 +51,7 @@ public class DatosNota
                 Nota nuevaNota = new Nota(id, idInscripcion, nombre, valor, porcentaje);
 
                 // crea el panel con la nota creada
-                PanelNota nuevoPanel = new PanelNota(idInscripcion, materia, nuevaNota, panelNotas);
+                PanelNota nuevoPanel = new PanelNota(materia, nuevaNota, panelNotas);
                 nuevoPanel.setTextoPuntaje(String.valueOf(valor));
                 nuevoPanel.setTextoPorcentaje(String.valueOf(porcentaje));
             }
@@ -106,6 +106,26 @@ public class DatosNota
             WindowComponent.cuadroMensaje(contenedor,
                                         "Error durante la eliminación.",
                                         "Database error",
+                                        JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // metodo para eliminar todas las notas de una materia
+    public void eliminarTodo(int idInscripcion, Container contenedor)
+    {
+        String query = "DELETE FROM Nota WHERE idInscripcion = ?";
+        try (Connection conectado = Reporte.conectarDB();
+             PreparedStatement eliminar = conectado.prepareStatement(query))
+        {
+            eliminar.setInt(1, idInscripcion);
+            eliminar.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            WindowComponent.cuadroMensaje(contenedor,
+                                        "Error al eliminar las notas.",
+                                        "Data error",
                                         JOptionPane.ERROR_MESSAGE);
         }
     }

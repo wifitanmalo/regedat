@@ -138,7 +138,7 @@ public class Reporte
             panel.setBackground(Color.decode("#FF746C")); // panel rojo pastel
             panel.setTextoColor(Color.decode("#BA2820")); // texto rojo
         }
-        else if (notaRestante >= 4.0) // riesgo alto, necesita una nota casi perfecta para aprobar
+        else if (notaRestante >= (Materia.MAXIMO_PUNTAJE*(90/100)) ) // riesgo alto, necesita una nota casi perfecta para aprobar
         {
             if (popUps)
             {
