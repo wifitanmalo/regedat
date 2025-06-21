@@ -54,6 +54,7 @@ public class DatosNota
                 PanelNota nuevoPanel = new PanelNota(materia, nuevaNota, panelNotas);
                 nuevoPanel.setTextoPuntaje(String.valueOf(valor));
                 nuevoPanel.setTextoPorcentaje(String.valueOf(porcentaje));
+                nuevoPanel.setValorNota(valor*(porcentaje/100.0));
             }
             // recarga el panel para mostrar los cambios
             WindowComponent.recargar(panelNotas);

@@ -25,6 +25,9 @@ public class PanelNota extends JPanel
     // objeto de la nota actual
     private final Nota nota;
 
+    // texto del valor que suma la nota
+    private JLabel valorNota;
+
     // campos de los valores de la nota
     private JTextField campoPuntaje, campoPorcentaje;
 
@@ -45,7 +48,7 @@ public class PanelNota extends JPanel
         setLayout(null);
 
         // campo de texto donde se ingresa el puntaje
-        campoPuntaje = WindowComponent.setCampoTexto(20,
+        campoPuntaje = WindowComponent.setCampoTexto(70,
                 36,
                 80,
                 30);
@@ -61,6 +64,7 @@ public class PanelNota extends JPanel
                 try
                 {
                     double nuevoPuntaje = Double.parseDouble(campoPuntaje.getText().trim());
+                    double porcentaje = Double.parseDouble(campoPorcentaje.getText().trim());
                     if (nuevoPuntaje < 0)
                     {
                         WindowComponent.cuadroMensaje(panelNotas,
@@ -81,6 +85,9 @@ public class PanelNota extends JPanel
                     {
                         // actualiza el puntaje de la nota en la base de datos
                         Sistema.notaDAO.actualizarPuntaje(nota, nuevoPuntaje, panelNotas);
+                        // actualiza el valor de la nota en el panel
+                        double valor = nuevoPuntaje*(porcentaje/100.0);
+                        setValorNota(valor);
                     }
                 }
                 catch (NumberFormatException ex)
@@ -121,6 +128,7 @@ public class PanelNota extends JPanel
             {
                 try
                 {
+                    double puntaje = Double.parseDouble(campoPuntaje.getText().trim());
                     double nuevoPorcentaje = Double.parseDouble(campoPorcentaje.getText().trim());
                     if (nuevoPorcentaje < 0)
                     {
@@ -142,6 +150,9 @@ public class PanelNota extends JPanel
                     {
                         // actualiza el porcentaje de la nota en la base de datos
                         Sistema.notaDAO.actualizarPorcentaje(nota, nuevoPorcentaje, panelNotas);
+                        // actualiza el valor de la nota en el panel
+                        double valor = puntaje*(nuevoPorcentaje/100.0);
+                        setValorNota(valor);
                     }
                 }
                 catch (NumberFormatException ex)
@@ -156,13 +167,13 @@ public class PanelNota extends JPanel
         });
 
         // texto donde se muestra el simbolo del porcentaje
-        JLabel simboloPorcentaje = WindowComponent.setTexto("%",
-                WindowComponent.xPositivo(campoPorcentaje, 6),
-                campoPorcentaje.getY(),
+        valorNota = WindowComponent.setTexto("0.0",
+                12,
+                campoPuntaje.getY(),
                 50,
                 30);
-        WindowComponent.configurarTexto(simboloPorcentaje,
-                WindowComponent.COLOR_FUENTE,
+        WindowComponent.configurarTexto(valorNota,
+                Color.LIGHT_GRAY,
                 1,
                 18);
 
@@ -193,7 +204,7 @@ public class PanelNota extends JPanel
         add(nombreNota);
         add(campoPuntaje);
         add(campoPorcentaje);
-        add(simboloPorcentaje);
+        add(valorNota);
         add(botonEliminar);
 
         // agrega la nota en el panel de las notas
@@ -204,6 +215,16 @@ public class PanelNota extends JPanel
     }
 
     // setters and getters
+    public void setValorNota(double puntaje)
+    {
+        puntaje = (int)(puntaje * 100) / 100.0;
+        valorNota.setText(String.valueOf(puntaje));
+    }
+    public JLabel getValorNota()
+    {
+        return valorNota;
+    }
+
     public void setTextoPuntaje(String score)
     {
         campoPuntaje.setText(score);
