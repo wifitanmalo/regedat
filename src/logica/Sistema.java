@@ -4,8 +4,14 @@ package logica;
 import java.awt.Color;
 import java.awt.Container;
 
-// importaciones de security
+// importaciones de io/nio
+import io.github.cdimascio.dotenv.Dotenv;
 import java.nio.charset.StandardCharsets;
+
+// importaciones de mail
+import javax.mail.MessagingException;
+
+// importaciones de security
 import java.security.MessageDigest;
 
 // importaciones de SQL
@@ -16,11 +22,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 // importaciones de swing
-import javax.mail.MessagingException;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-
-// importaciones de util
 
 // importaciones de los paquetes
 import interfaz.MenuInicio;
@@ -30,7 +33,6 @@ import interfaz.WindowComponent;
 import datos.DatosEstudiante;
 import datos.DatosMateria;
 import datos.DatosNota;
-import io.github.cdimascio.dotenv.Dotenv;
 
 public class Sistema
 {
@@ -235,19 +237,21 @@ public class Sistema
     // metodo para calcular cuánto hay que sacar en el resto de la materia para aprobarla
     public static double calcularNotaRestante(double puntajeActual,
                                                 double porcentajeEvaluado,
-                                                double minAprobatorio
-    ) {
-        // 1) Si ya completó el 100%:
-        if (porcentajeEvaluado >= 100.0) {
+                                                double minAprobatorio)
+    {
+        // ya se evaluo el 100% de la materia
+        if (porcentajeEvaluado >= 100.0)
+        {
             return (puntajeActual >= minAprobatorio) ? 0.0 : Double.POSITIVE_INFINITY;
         }
-        // 2) Si ya está por encima del mínimo antes de terminar:
-        if (puntajeActual >= minAprobatorio) {
+        // la materia ya llego al minimo aprobatorio
+        if (puntajeActual >= minAprobatorio)
+        {
             return 0.0;
         }
-        // 3) Cálculo del porcentaje restante
+        // calculo del porcentaje restante
         double porcentajeRestante = 100.0 - porcentajeEvaluado;
-        // 4) Despejar notaRestante
+        // despejar nota restante
         double notaRestante = (minAprobatorio - puntajeActual) * 100.0 / porcentajeRestante;
         return Math.max(notaRestante, 0.0);
     }

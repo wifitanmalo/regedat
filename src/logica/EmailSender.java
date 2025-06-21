@@ -17,8 +17,8 @@ import javax.mail.Transport;
 // importaciones de util
 import java.util.Properties;
 
-public class EmailSender {
-
+public class EmailSender
+{
     private static final Dotenv dotenv = Dotenv.load();
 
     private static final String SMTP_HOST = dotenv.get("SMTP_HOST");

@@ -1,21 +1,15 @@
 package interfaz;
 
 // importaciones de awt
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Image;
+import java.awt.*;
 
 // importaciones de swing
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 // importaciones de los paquetes
+import datos.DatosEstudiante;
 import logica.Estudiante;
+import logica.OTP;
 import logica.Sistema;
 
 public class MenuInicio extends JPanel
@@ -129,8 +123,8 @@ public class MenuInicio extends JPanel
         WindowComponent.eventoBoton(botonRecuperar,
                                     () ->
                                     {
-                                        // entra al menu de recuperar clave
-                                        WindowComponent.cambiarPanel(this, menuRecuperar);
+                                        // genera el cuadro para ingresar el id del estudiante
+                                        cuadroCodigo(this);
                                     },
                                     WindowComponent.FONDO_BOTON,
                                     WindowComponent.FONDO_SOBRE_BOTON,
@@ -199,5 +193,65 @@ public class MenuInicio extends JPanel
     {
         WindowComponent.limpiarCampo(campoCodigo);
         WindowComponent.limpiarCampo(campoClave);
+    }
+
+    // metodo para inicializar el cuadro interactivo para ingresar el codigo de la materia
+    public void cuadroCodigo(Component contenedor)
+    {
+        Window ventana = SwingUtilities.getWindowAncestor(contenedor);
+        JDialog dialogo = new JDialog(ventana, "Ingresar código", Dialog.ModalityType.APPLICATION_MODAL);
+        dialogo.setSize(250, 100);
+        dialogo.setLayout(new FlowLayout());
+        dialogo.setLocationRelativeTo(contenedor);
+
+        JTextField campoTexto = new JTextField(8);
+        WindowComponent.configurarTexto(campoTexto, Color.decode("#3D3D3D"), 1, 14);
+        JButton inscribir = new JButton("Vale");
+
+        inscribir.addActionListener(e -> {
+            try
+            {
+                int id = Integer.parseInt(campoTexto.getText().trim());
+                if (Sistema.estudianteDAO.estudianteExiste(id, dialogo))
+                {
+                    // actualiza el id al del estudiante a recuperar
+                    RecuperarClave.ID_ESTUDIANTE = id;
+                    // envia el codigo OTP al correo electronico
+                    OTP.enviarOTP(OTP.generarOTP(id, dialogo),
+                                    Sistema.estudianteDAO.obtenerEstudiante(id).getCorreo(),
+                                    dialogo);
+                    WindowComponent.cuadroMensaje(dialogo,
+                                                    "Código OTP enviado a tu correo.",
+                                                    "OTP generado",
+                                                    JOptionPane.INFORMATION_MESSAGE);
+                    // cierra el cuadro de dialogo
+                    dialogo.dispose();
+                    // entra al menu de recuperar clave
+                    WindowComponent.cambiarPanel(this, menuRecuperar);
+                }
+                else
+                {
+                    WindowComponent.cuadroMensaje(dialogo,
+                                                "El estudiante no existe.",
+                                                "Error de entrada",
+                                                JOptionPane.ERROR_MESSAGE);
+                    campoTexto.setText("");
+                }
+            }
+            catch (NumberFormatException nfe)
+            {
+                nfe.getStackTrace();
+                WindowComponent.cuadroMensaje(dialogo,
+                                            "Solo puedes ingresar números enteros.",
+                                            "Error de entrada",
+                                            JOptionPane.ERROR_MESSAGE);
+                campoTexto.setText("");
+            }
+        });
+
+        dialogo.add(new JLabel("Código: "));
+        dialogo.add(campoTexto);
+        dialogo.add(inscribir);
+        dialogo.setVisible(true);
     }
 }

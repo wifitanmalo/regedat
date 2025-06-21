@@ -1,5 +1,6 @@
 package interfaz;
 
+import logica.OTP;
 import logica.Sistema;
 
 import java.awt.*;
@@ -7,8 +8,11 @@ import javax.swing.*;
 
 public class RecuperarClave extends JPanel
 {
+    // id del estudiante a recuperar
+    public static int ID_ESTUDIANTE;
+
     // text boxes
-    private JTextField  campoID;
+    private JTextField campoOTP;
     private JPasswordField  campoClave;
     private JPasswordField  campoConfirmacion;
 
@@ -68,14 +72,14 @@ public class RecuperarClave extends JPanel
                                     () -> {
                                         try
                                         {
-                                            int id = Integer.parseInt(campoID.getText());
+                                            String otp = campoOTP.getText();
                                             String clave = campoClave.getText();
                                             String confirmar = campoConfirmacion.getText();
                                             String hash = Sistema.hashSHA256(clave);
-                                            if (!Sistema.estudianteDAO.estudianteExiste(id, campoPanel))
+                                            if (!OTP.validarOTP(ID_ESTUDIANTE, otp, campoPanel))
                                             {
                                                 WindowComponent.cuadroMensaje(campoPanel,
-                                                                            "El estudiante no existe.",
+                                                                            "Código inválido.",
                                                                             "Error de autenticación",
                                                                             JOptionPane.ERROR_MESSAGE);
                                             }
@@ -95,7 +99,7 @@ public class RecuperarClave extends JPanel
                                             }
                                             else
                                             {
-                                                Sistema.estudianteDAO.actualizarClave(id, hash, campoPanel);
+                                                Sistema.estudianteDAO.actualizarClave(ID_ESTUDIANTE, hash, campoPanel);
                                                 WindowComponent.cuadroMensaje(campoPanel,
                                                                             "Clave actualizada con éxito.",
                                                                             "Recuperacion exitosa",
@@ -103,17 +107,13 @@ public class RecuperarClave extends JPanel
                                                 WindowComponent.cambiarPanel(this, Main.MENU_PRINCIPAL);
                                             }
                                         }
-                                        catch (NumberFormatException nfw)
-                                        {
-                                            nfw.printStackTrace();
-                                            WindowComponent.cuadroMensaje(campoPanel,
-                                                                        "Código de usuario inválido.",
-                                                                        "Error de validación",
-                                                                        JOptionPane.ERROR_MESSAGE);
-                                        }
                                         catch (Exception e)
                                         {
                                             e.printStackTrace();
+                                            WindowComponent.cuadroMensaje(campoPanel,
+                                                                        "Error al obtener el hash de las claves.",
+                                                                        "Hash error",
+                                                                        JOptionPane.ERROR_MESSAGE);
                                         }
                                         limpiarTodo();
                                     },
@@ -121,31 +121,31 @@ public class RecuperarClave extends JPanel
                                     WindowComponent.FONDO_SOBRE_BOTON,
                                     WindowComponent.FONDO_PRESIONAR_BOTON);
 
-        // titulo del codigo de la materia
-        JLabel tituloID = WindowComponent.setTexto("ID",
+        // titulo del codigo OTP
+        JLabel tituloOTP = WindowComponent.setTexto("Código OTP",
                                                     (campoPanel.getWidth()-250)/2,
                                                     20,
                                                     250,
                                                     22);
-        WindowComponent.configurarTexto(tituloID,
+        WindowComponent.configurarTexto(tituloOTP,
                                         WindowComponent.COLOR_FUENTE,
                                         1,
-                                        WindowComponent.getAltura(tituloID));
+                                        WindowComponent.getAltura(tituloOTP));
 
-        // campo de texto del codigo de la materia
-        campoID = WindowComponent.setCampoTexto(tituloID.getX(),
-                                                WindowComponent.yNegativo(tituloID,5),
+        // campo de texto del codigo OTP
+        campoOTP = WindowComponent.setCampoTexto(tituloOTP.getX(),
+                                                WindowComponent.yNegativo(tituloOTP,5),
                                                 250,
                                                 30);
-        WindowComponent.configurarTexto(campoID,
+        WindowComponent.configurarTexto(campoOTP,
                                         Color.decode("#3D3D3D"),
                                         1,
                                         18);
 
         // titulo de la clave
         JLabel tituloClave = WindowComponent.setTexto("Nueva clave",
-                                                    tituloID.getX(),
-                                                    WindowComponent.yNegativo(campoID,20),
+                                                    tituloOTP.getX(),
+                                                    WindowComponent.yNegativo(campoOTP,20),
                                                     250,
                                                     22);
         WindowComponent.configurarTexto(tituloClave,
@@ -154,7 +154,7 @@ public class RecuperarClave extends JPanel
                                         WindowComponent.getAltura(tituloClave));
 
         // campo de texto del nombre
-        campoClave = WindowComponent.setCampoClave(tituloID.getX(),
+        campoClave = WindowComponent.setCampoClave(tituloOTP.getX(),
                                                     WindowComponent.yNegativo(tituloClave,5),
                                                     250,
                                                     30);
@@ -190,8 +190,8 @@ public class RecuperarClave extends JPanel
         add(botonCambiar);
 
         // agrega los componentes a este panel
-        campoPanel.add(tituloID);
-        campoPanel.add(campoID);
+        campoPanel.add(tituloOTP);
+        campoPanel.add(campoOTP);
         campoPanel.add(tituloClave);
         campoPanel.add(campoClave);
         campoPanel.add(tituloConfirmar);
@@ -201,7 +201,7 @@ public class RecuperarClave extends JPanel
     // metodo para limpiar las cajas de texto
     public void limpiarTodo()
     {
-        WindowComponent.limpiarCampo(campoID);
+        WindowComponent.limpiarCampo(campoOTP);
         WindowComponent.limpiarCampo(campoClave);
         WindowComponent.limpiarCampo(campoConfirmacion);
     }
