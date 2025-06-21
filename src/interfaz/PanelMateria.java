@@ -142,10 +142,10 @@ public class PanelMateria extends JPanel
                             JOptionPane.YES_NO_OPTION);
                     if(choice == JOptionPane.YES_OPTION)
                     {
-                        // elimina la inscripcion de la materia en la base de datos
-                        Sistema.materiaDAO.eliminarMateria(this.materia.getIdInscripcion(), panelMaterias);
                         // elimina todas las notas vinculadas a la materia
                         Sistema.notaDAO.eliminarTodo(this.materia.getIdInscripcion(), panelMaterias);
+                        // elimina la inscripcion de la materia en la base de datos
+                        Sistema.materiaDAO.eliminarMateria(this.materia.getIdInscripcion(), panelMaterias);
                         // recarga el panel para mostrar los cambios
                         Sistema.materiaDAO.cargarMaterias(panelMaterias, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
                     }

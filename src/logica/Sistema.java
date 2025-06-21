@@ -93,7 +93,7 @@ public class Sistema
     {
         Dotenv dotenv = Dotenv.load();
         String url = "jdbc:postgresql://localhost:5432/regedat";
-        String user = "postgres";
+        String user = dotenv.get("POSTGRES_USER");
         String password = dotenv.get("POSTGRES_PASSWORD");
         return DriverManager.getConnection(url, user, password);
     }
@@ -141,13 +141,12 @@ public class Sistema
     )
     {
         String asunto = "Sin riesgo";
-        String saludo = String.format("Hola, %s.", MenuInicio.ESTUDIANTE_ACTUAL.getNombres());
+        String saludo = String.format("Hola, %s. ", MenuInicio.ESTUDIANTE_ACTUAL.getNombres());
 
         // calcula cuánto se necesita en el restante para llegar al minimo aprobatorio
         double notaRestante = calcularNotaRestante(puntajeActual, porcentajeEvaluado, Materia.MINIMO_PUNTAJE);
         String cuerpo = String.format("Necesitas %.2f en el porcentaje restante para aprobar %s.", notaRestante, nombreMateria);
 
-        // se ha perdido la materia
         if (puntajeActual >= Materia.MINIMO_PUNTAJE) // se ha aprobado la materia
         {
             if (popUps)
@@ -192,7 +191,7 @@ public class Sistema
             panel.setBackground(Color.decode("#FFB347")); // panel naranja pastel
             panel.setTextoColor(Color.decode("#E86100")); // texto naranja fuerte
         }
-        else if (notaRestante >= Materia.MINIMO_PUNTAJE) // riesgo medio, necesita una nota promedio para aprobar
+        else if (notaRestante > Materia.MINIMO_PUNTAJE) // riesgo medio, necesita una nota promedio para aprobar
         {
             if (popUps)
             {

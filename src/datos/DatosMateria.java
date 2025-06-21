@@ -180,18 +180,18 @@ public class DatosMateria
     }
 
     // metodo para crear una inscripcion en la base de datos
-    public boolean inscribirMateria(int idInscripcion, Container contenedor)
+    public boolean inscribirMateria(int idMateria, Container contenedor)
     {
         // consultas
-        String buscar = "SELECT 1 FROM Inscripcion WHERE idEstudiante = ? AND idInscripcion = ?";
-        String insertar = "INSERT INTO Inscripcion (idEstudiante, idInscripcion) VALUES (?, ?)";
+        String buscar = "SELECT 1 FROM Inscripcion WHERE idEstudiante = ? AND idMateria = ?";
+        String insertar = "INSERT INTO Inscripcion (idEstudiante, idMateria) VALUES (?, ?)";
 
         try (Connection conectar = Sistema.conectarDB();
              PreparedStatement inscripcion = conectar.prepareStatement(buscar))
         {
             // llaves foraneas de la inscripcion
             inscripcion.setInt(1, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
-            inscripcion.setInt(2, idInscripcion);
+            inscripcion.setInt(2, idMateria);
             // ejecuta la consulta
             ResultSet resultado = inscripcion.executeQuery();
 
@@ -210,7 +210,7 @@ public class DatosMateria
             {
                 // llaveas foraneas de la inscripcion
                 insertStmt.setInt(1, MenuInicio.ESTUDIANTE_ACTUAL.getCodigo());
-                insertStmt.setInt(2, idInscripcion);
+                insertStmt.setInt(2, idMateria);
                 // ejecuta la consulta
                 insertStmt.executeUpdate();
                 return true;

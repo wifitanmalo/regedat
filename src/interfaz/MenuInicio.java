@@ -110,25 +110,25 @@ public class MenuInicio extends JPanel
                                     WindowComponent.FONDO_SOBRE_BOTON,
                                     WindowComponent.FONDO_PRESIONAR_BOTON);
         // agrega el boton de confirmacion
-        JButton botonRecuperar = WindowComponent.setBoton("Recuperar",
+        JButton botonRecuperar = WindowComponent.setBoton("Rest.",
                                                             botonEntrar.getX(),
                                                             WindowComponent.yNegativo(botonEntrar, 10),
                                                             78,
                                                             50,
-                                                            WindowComponent.FONDO_BOTON);
+                                                            WindowComponent.FONDO_GRIS);
         WindowComponent.configurarTexto(botonRecuperar,
                                         WindowComponent.COLOR_FUENTE,
                                         1,
-                                        10);
+                                        12);
         WindowComponent.eventoBoton(botonRecuperar,
                                     () ->
                                     {
                                         // genera el cuadro para ingresar el id del estudiante
                                         cuadroCodigo(this);
                                     },
-                                    WindowComponent.FONDO_BOTON,
-                                    WindowComponent.FONDO_SOBRE_BOTON,
-                                    WindowComponent.FONDO_PRESIONAR_BOTON);
+                                    WindowComponent.FONDO_GRIS,
+                                    Color.decode("#AAAAAA"),
+                                    Color.decode("#C7C8CA"));
 
         // titulo del correo
         JLabel tituloCorreo = WindowComponent.setTexto("Código",

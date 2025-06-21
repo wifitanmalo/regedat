@@ -1,10 +1,24 @@
 package interfaz;
 
+// importaciones de awt
+import java.awt.Color;
+
+// importaciones de mail
+import javax.mail.MessagingException;
+
+// importaciones de swing
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+// importaciones de paquete
+import logica.EmailSender;
+import logica.Estudiante;
 import logica.OTP;
 import logica.Sistema;
-
-import java.awt.*;
-import javax.swing.*;
 
 public class RecuperarClave extends JPanel
 {
@@ -99,11 +113,27 @@ public class RecuperarClave extends JPanel
                                             }
                                             else
                                             {
+                                                // actualiza la clave en la base de datos
                                                 Sistema.estudianteDAO.actualizarClave(ID_ESTUDIANTE, hash, campoPanel);
                                                 WindowComponent.cuadroMensaje(campoPanel,
                                                                             "Clave actualizada con éxito.",
                                                                             "Recuperacion exitosa",
                                                                             JOptionPane.INFORMATION_MESSAGE);
+                                                // envia la notificacion al correo electronico
+                                                Estudiante estudiante = Sistema.estudianteDAO.obtenerEstudiante(ID_ESTUDIANTE);
+                                                try
+                                                {
+                                                    EmailSender.sendEmail(estudiante.getCorreo(),
+                                                                            "Clave actualizada",
+                                                                            String.format("Hola, %s. La clave de tu cuenta %d ha sido actualizada con éxito.",
+                                                                            estudiante.getNombres(),
+                                                                            estudiante.getCodigo()));
+                                                }
+                                                catch (MessagingException e)
+                                                {
+                                                    throw new RuntimeException(e);
+                                                }
+                                                // regresa al menu principal
                                                 WindowComponent.cambiarPanel(this, Main.MENU_PRINCIPAL);
                                             }
                                         }
