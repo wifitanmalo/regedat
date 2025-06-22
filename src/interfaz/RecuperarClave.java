@@ -104,6 +104,20 @@ public class RecuperarClave extends JPanel
                                                                             "Error de autenticación",
                                                                             JOptionPane.ERROR_MESSAGE);
                                             }
+                                            else if (clave.length() < 8)
+                                            {
+                                                WindowComponent.cuadroMensaje(campoPanel,
+                                                                            "La clave debe ser mayor a 8 carácteres.",
+                                                                            "Clave muy corta",
+                                                                            JOptionPane.ERROR_MESSAGE);
+                                            }
+                                            else if (clave.length() > 64)
+                                            {
+                                                WindowComponent.cuadroMensaje(campoPanel,
+                                                                            "La clave no debe exceder los 64 carácteres.",
+                                                                            "Clave muy larga",
+                                                                            JOptionPane.ERROR_MESSAGE);
+                                            }
                                             else if (!Sistema.validarClave(clave))
                                             {
                                                 WindowComponent.cuadroMensaje(campoPanel,

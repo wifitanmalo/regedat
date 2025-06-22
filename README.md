@@ -17,6 +17,32 @@ en tu curso.
 > - [Eclipse](https://www.eclipse.org/downloads/)
 >
 
+También, asegúrate de crear un archivo llamado `.env` en la carpeta `/run` si solo piensas
+ejecutar el proyecto o en la raíz del proyecto si piensas trabajar con el código fuente. El
+archivo debe contener las siguientes variables:
+
+    POSTGRES_USER
+    POSTGRES_PASSWORD
+    SMTP_HOST
+    SMTP_PORT
+    SMTP_USERNAME
+    SMTP_PASSWORD
+
+En las primeras dos variables `POSTGRES_USER` y `POSTGRES_PASSWORD` se define
+el usuario Postgres con su contraseña para acceder a la base de datos, asegúrate
+de que la base de datos se encuentre creada en la ubicación por defecto `localhost`
+y utilizando el puerto `5432`.
+
+Para las dos siguientes variables `SMTP_HOST` y `SMTP_PORT` se define el servidor
+de la cuenta que se encargará de enviar los emails **(puede ser el servidor de
+Gmail, Outlook, entre otros)** y el puerto que usa dicho servidor.
+
+Y por último, en las variables `SMTP_USERNAME` y `SMTP_PASSWORD` se define tanto la
+dirección de correo electrónico como la **contraseña de aplicación** de la cuenta
+que se encargará de enviar los correos a los usuarios de la aplicación. Haciendo esto
+el sistema logrará conectarse exitosamente a la base de datos y enviar los correos
+a los usuarios a medida de que estos vayan haciendo uso del programa.
+
 
 -------------
 
@@ -45,6 +71,7 @@ minutos)** y otros dos para ingresar la `nueva contraseña` y `confirmarla`.
 > - La contraseña debe contener una **letra minúscula [a-z].**
 > - La contraseña debe contener una **letra mayúscula [A-Z].**
 > - La contraseña debe contener un **símbolo**.
+> - La contraseña debe ser mayor o igual a los **8 carácteres.**
 > - La contraseña no debe superar los **64 carácteres**.
 
 Si todo fue realizado correctamente, se le avisará al estudiante que su contraseña
@@ -94,8 +121,8 @@ mencionado anteriormente y así, aparecerá un cuadro de texto que te avisará s
 ganado la materia, si la has perdido o cuánto se necesita obtener en el porcentaje restante para poder aprobarla.
 
 
-> [!CAUTION] En base a este cálculo, se indicará el nivel de riesgo de la materia el cual dependerá de los siguiente criterios:
-> 
+> [!CAUTION] 
+> En base a este cálculo, se indicará el nivel de riesgo de la materia el cual dependerá de los siguiente criterios:
 > - **Sin riesgo:** se debe obtener una calificación `menor o igual` a la mínima aprobatoria en el resto de la materia para poder aprobarla.
 > - **Riesgo medio:** se debe obtener una calificación `mayor` a la mínima aprobatoria en el resto de la materia para poder aprobarla.
 > - **Riesgo medio:** se debe obtener una calificación casi perfecta, es decir `mayor
