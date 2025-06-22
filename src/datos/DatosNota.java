@@ -28,6 +28,7 @@ public class DatosNota
 
     }
 
+
     // metodo para cargar las notas de una materia desde la base de datos
     public void cargarNotas(Materia materia, JPanel panelNotas)
     {
@@ -54,7 +55,9 @@ public class DatosNota
                 PanelNota nuevoPanel = new PanelNota(materia, nuevaNota, panelNotas);
                 nuevoPanel.setTextoPuntaje(String.valueOf(valor));
                 nuevoPanel.setTextoPorcentaje(String.valueOf(porcentaje));
-                nuevoPanel.setValorNota(valor*(porcentaje/100.0));
+                //nuevoPanel.setValorNota(valor*(porcentaje/100.0));
+                // actualiza el valor de la nota en el panel
+                nuevoPanel.setValorNota(String.format("%.2f", Sistema.notaDAO.obtenerValor(id, idInscripcion, panelNotas)));
             }
             // recarga el panel para mostrar los cambios
             WindowComponent.recargar(panelNotas);
@@ -68,6 +71,7 @@ public class DatosNota
                                         JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     // metodo para crear una nota en la base de datos
     public void crearNota(int idInscripcion, String nombre, Container container)
@@ -90,6 +94,7 @@ public class DatosNota
         }
     }
 
+
     // method to delete a grade in the database
     public void eliminarNota(Nota nota, Container contenedor)
     {
@@ -111,6 +116,7 @@ public class DatosNota
         }
     }
 
+
     // metodo para eliminar todas las notas de una materia
     public void eliminarTodo(int idInscripcion, Container contenedor)
     {
@@ -130,6 +136,7 @@ public class DatosNota
                                         JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     // metodo para actualizar una nota en la base de datos
     public void actualizarPuntaje(Nota nota, double newScore, Container container)
@@ -155,6 +162,7 @@ public class DatosNota
         }
     }
 
+
     // method to update the percentage of a grade
     public void actualizarPorcentaje(Nota nota, double nuevoPorcentaje, Container contenedor)
     {
@@ -177,5 +185,35 @@ public class DatosNota
                                         "Database error",
                                         JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+
+    // method to get the value of a grade
+    public double obtenerValor(int idNota, int idInscripcion, Container container)
+    {
+        double totalScore = 0.0;
+        String query = "SELECT (valor * (porcentaje/100.0)) AS valorCalculado FROM Nota WHERE id = ? AND idInscripcion = ?";
+        try (Connection isConnected = Sistema.conectarDB();
+             PreparedStatement getGrade = isConnected.prepareStatement(query))
+        {
+            getGrade.setInt(1, idNota);
+            getGrade.setInt(2, idInscripcion);
+            try (ResultSet grade = getGrade.executeQuery())
+            {
+                if (grade.next())
+                {
+                    totalScore = grade.getDouble("valorCalculado");
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            WindowComponent.cuadroMensaje(container,
+                                    "Error al obtener el valor de la nota.",
+                                    "Database error",
+                                    JOptionPane.ERROR_MESSAGE);
+        }
+        return totalScore;
     }
 }

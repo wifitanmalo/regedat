@@ -85,9 +85,6 @@ public class PanelNota extends JPanel
                     {
                         // actualiza el puntaje de la nota en la base de datos
                         Sistema.notaDAO.actualizarPuntaje(nota, nuevoPuntaje, panelNotas);
-                        // actualiza el valor de la nota en el panel
-                        double valor = nuevoPuntaje*(porcentaje/100.0);
-                        setValorNota(valor);
                     }
                 }
                 catch (NumberFormatException ex)
@@ -97,6 +94,8 @@ public class PanelNota extends JPanel
                     // recarga el panel para mostrar los cambios
                     Sistema.notaDAO.cargarNotas(materia, panelNotas);
                 }
+                // actualiza el valor de la nota en el panel
+                setValorNota(String.format("%.2f", Sistema.notaDAO.obtenerValor(nota.getId(), nota.getIdInscripcion(), panelNotas)));
                 super.keyReleased(e);
             }
         });
@@ -150,9 +149,6 @@ public class PanelNota extends JPanel
                     {
                         // actualiza el porcentaje de la nota en la base de datos
                         Sistema.notaDAO.actualizarPorcentaje(nota, nuevoPorcentaje, panelNotas);
-                        // actualiza el valor de la nota en el panel
-                        double valor = puntaje*(nuevoPorcentaje/100.0);
-                        setValorNota(valor);
                     }
                 }
                 catch (NumberFormatException ex)
@@ -162,6 +158,8 @@ public class PanelNota extends JPanel
                     // recarga el panel para mostrar los cambios
                     Sistema.notaDAO.cargarNotas(materia, panelNotas);
                 }
+                // actualiza el valor de la nota en el panel
+                setValorNota(String.format("%.2f", Sistema.notaDAO.obtenerValor(nota.getId(), nota.getIdInscripcion(), panelNotas)));
                 super.keyReleased(e);
             }
         });
@@ -215,9 +213,8 @@ public class PanelNota extends JPanel
     }
 
     // setters and getters
-    public void setValorNota(double puntaje)
+    public void setValorNota(String puntaje)
     {
-        puntaje = (int)(puntaje * 100) / 100.0;
         valorNota.setText(String.valueOf(puntaje));
     }
     public JLabel getValorNota()
